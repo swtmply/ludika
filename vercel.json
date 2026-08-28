@@ -12,6 +12,7 @@
       "framework": "hono",
       "entrypoint": "dist/index.mjs",
       "installCommand": "cd ../.. && bun install",
+      "buildCommand": "cd ../.. && bunx turbo run build --filter=server",
       "routes": [
         {
           "src": "/api/((?!auth(?:/|$)).*)",
