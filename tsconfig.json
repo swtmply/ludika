@@ -1,0 +1,3 @@
+{
+  "extends": "@ludika/config/tsconfig.base.json"
+}

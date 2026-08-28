@@ -1,0 +1,28 @@
+// Better-T-Stack project metadata
+//
+// Keep this file to use the `add` command.
+// Add addons: bunx create-better-t-stack@latest add
+//
+// Docs: https://better-t-stack.dev/docs
+// Stack Builder: https://better-t-stack.dev/new
+
+{
+  "$schema": "https://r2.better-t-stack.dev/schema.json",
+  "version": "3.41.4",
+  "createdAt": "2026-08-28T20:51:10.006Z",
+  "reproducibleCommand": "bun create better-t-stack@latest ludika --frontend next native-uniwind --backend hono --runtime bun --database postgres --orm drizzle --api trpc --auth better-auth --payments none --addons oxlint skills turborepo --examples todo --db-setup neon --web-deploy vercel --server-deploy vercel --git --package-manager bun --install",
+  "database": "postgres",
+  "orm": "drizzle",
+  "backend": "hono",
+  "runtime": "bun",
+  "frontend": ["next", "native-uniwind"],
+  "addons": ["oxlint", "skills", "turborepo"],
+  "examples": ["todo"],
+  "auth": "better-auth",
+  "payments": "none",
+  "packageManager": "bun",
+  "dbSetup": "neon",
+  "api": "trpc",
+  "webDeploy": "vercel",
+  "serverDeploy": "vercel",
+}

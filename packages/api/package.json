@@ -1,0 +1,29 @@
+{
+  "name": "@ludika/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@ludika/auth": "workspace:*",
+    "@ludika/db": "workspace:*",
+    "@ludika/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "@types/pg": "^8.20.0",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ludika/config": "workspace:*",
+    "hono": "catalog:",
+    "typescript": "^6.0.3"
+  }
+}
