@@ -12,7 +12,6 @@
       "framework": "hono",
       "entrypoint": "src/index.ts",
       "installCommand": "cd ../.. && bun install",
-      "buildCommand": "cd ../.. && bunx turbo run build --filter=server",
       "routes": [
         {
           "src": "/api/((?!auth(?:/|$)).*)",
