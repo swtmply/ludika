@@ -4,9 +4,27 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./server": "./src/server.ts",
-    "./web": "./src/web.ts",
-    "./native": "./src/native.ts"
+    "./server": {
+      "types": "./src/server.ts",
+      "bun": "./src/server.ts",
+      "node": "./dist/server.mjs",
+      "default": "./src/server.ts"
+    },
+    "./web": {
+      "types": "./src/web.ts",
+      "bun": "./src/web.ts",
+      "node": "./dist/web.mjs",
+      "default": "./src/web.ts"
+    },
+    "./native": {
+      "types": "./src/native.ts",
+      "bun": "./src/native.ts",
+      "node": "./dist/native.mjs",
+      "default": "./src/native.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsdown"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.11",
@@ -17,6 +35,7 @@
   "devDependencies": {
     "@ludika/config": "workspace:*",
     "@types/bun": "catalog:",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3"
   }
 }

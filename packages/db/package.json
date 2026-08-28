@@ -3,9 +3,15 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./src/index.ts",
+      "bun": "./src/index.ts",
+      "node": "./dist/index.mjs",
       "default": "./src/index.ts"
     },
     "./*": {
+      "types": "./src/*.ts",
+      "bun": "./src/*.ts",
+      "node": "./dist/*.mjs",
       "default": "./src/*.ts"
     }
   },
@@ -14,7 +20,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate:deploy": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "build": "tsdown"
   },
   "dependencies": {
     "@ludika/env": "workspace:*",
@@ -26,6 +33,7 @@
   "devDependencies": {
     "@ludika/config": "workspace:*",
     "drizzle-kit": "^0.31.10",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3"
   }
 }

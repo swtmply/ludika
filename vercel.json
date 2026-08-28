@@ -1,17 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "bunVersion": "1.x",
   "services": {
     "web": {
       "root": "apps/web",
       "framework": "nextjs",
       "installCommand": "cd ../.. && bun install",
-      "buildCommand": "NEXT_PUBLIC_SERVER_URL=/api bun run build"
+      "buildCommand": "NEXT_PUBLIC_SERVER_URL=/api bunx turbo run build"
     },
     "server": {
       "root": "apps/server",
       "framework": "hono",
-      "entrypoint": "src/index.ts",
+      "entrypoint": "dist/index.mjs",
       "installCommand": "cd ../.. && bun install",
       "routes": [
         {
