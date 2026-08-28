@@ -10,9 +10,8 @@
     "server": {
       "root": "apps/server",
       "framework": "hono",
-      "entrypoint": "dist/index.mjs",
+      "entrypoint": "src/index.ts",
       "installCommand": "cd ../.. && bun install",
-      "buildCommand": "cd ../.. && bunx turbo run build --filter=server",
       "routes": [
         {
           "src": "/api/((?!auth(?:/|$)).*)",
