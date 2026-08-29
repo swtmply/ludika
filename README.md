@@ -141,6 +141,8 @@ For a dependency used by only one workspace, run `bun add <package>` from that w
 
 Edit code in the workspace that owns it. Add a new file next to the related feature, update the owning workspace's exports when a package file is public, and remove imports before deleting a file. Keep generated output such as `dist/` and `.next/` out of source changes. Update `bun.lock` when dependency manifests change.
 
+Mobile apps share HeroUI Native components through `packages/mobile-ui`.
+
 ### Add more shared components
 
 Run this from the project root to add more primitives to the shared UI package:
