@@ -3,14 +3,41 @@ name: Create Preview Build
 on:
   push:
     branches: ["preview"]
+    paths:
+      - apps/ludika-driver/**
+      - packages/**
+      - scripts/eas-affected.sh
+      - package.json
+      - bun.lock
+      - turbo.json
 
 concurrency:
   cancel_in_progress: true
   group: ${{ workflow.filename }}-${{ github.ref }}
 
 jobs:
+  detect_changes:
+    name: Detect relevant changes
+    outputs:
+      affected: ${{ steps.affected.outputs.affected }}
+    steps:
+      - uses: eas/checkout
+      - id: affected
+        name: Check whether ludika-driver is affected
+        working_directory: ../..
+        env:
+          BASE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          bash scripts/eas-affected.sh \
+            ludika-driver \
+            "${{ github.event.before }}" \
+            "${{ github.sha }}"
+
   fingerprint:
     name: Fingerprint
+    needs: [detect_changes]
+    if: ${{ needs.detect_changes.outputs.affected == 'true' }}
     type: fingerprint
     environment: preview
 
@@ -22,13 +49,13 @@ jobs:
       fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
       profile: preview
 
-  get_ios_build:
-    name: Find compatible iOS preview build
-    needs: [fingerprint]
-    type: get-build
-    params:
-      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
-      profile: preview
+  # get_ios_build:
+  #   name: Find compatible iOS preview build
+  #   needs: [fingerprint]
+  #   type: get-build
+  #   params:
+  #     fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+  #     profile: preview
 
   build_android:
     name: Build Android preview
@@ -39,19 +66,26 @@ jobs:
       platform: android
       profile: preview
 
-  build_ios:
-    name: Build iOS preview
-    needs: [get_ios_build]
-    if: ${{ !needs.get_ios_build.outputs.build_id }}
-    type: build
-    params:
-      platform: ios
-      profile: preview
+  # build_ios:
+  #   name: Build iOS preview
+  #   needs: [get_ios_build]
+  #   if: ${{ !needs.get_ios_build.outputs.build_id }}
+  #   type: build
+  #   params:
+  #     platform: ios
+  #     profile: preview
 
   publish_preview_update:
     name: Publish preview update
+    needs: [detect_changes]
+    if: ${{ needs.detect_changes.outputs.affected == 'true' }}
     type: update
     environment: preview
     params:
       channel: preview
       message: ${{ github.commit_message }}
+    hooks:
+      after_install_node_modules:
+        - name: Build workspace dependencies
+          working_directory: ../..
+          run: bun run build --filter=ludika-driver

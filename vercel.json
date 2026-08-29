@@ -5,13 +5,15 @@
       "root": "apps/web",
       "framework": "nextjs",
       "installCommand": "cd ../.. && bun install",
-      "buildCommand": "NEXT_PUBLIC_SERVER_URL=/api bunx turbo run build"
+      "buildCommand": "NEXT_PUBLIC_SERVER_URL=/api bunx turbo run build",
+      "ignoreCommand": "bunx turbo query affected --cwd=../.. --packages web --base=\"$VERCEL_GIT_PREVIOUS_SHA\" --head=\"$VERCEL_GIT_COMMIT_SHA\" --exit-code"
     },
     "server": {
       "root": "apps/server",
       "framework": "hono",
       "entrypoint": "src/index.ts",
       "installCommand": "cd ../.. && bun install",
+      "ignoreCommand": "bunx turbo query affected --cwd=../.. --packages server --base=\"$VERCEL_GIT_PREVIOUS_SHA\" --head=\"$VERCEL_GIT_COMMIT_SHA\" --exit-code",
       "routes": [
         {
           "src": "/api/((?!auth(?:/|$)).*)",
