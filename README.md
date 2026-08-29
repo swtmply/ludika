@@ -1,81 +1,145 @@
-# ludika
+# Ludika
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Hono, TRPC, and more.
+Ludika is a Bun workspace monorepo. It contains two Expo mobile apps, a Hono and tRPC server, a Next.js web app, and shared TypeScript packages.
 
-## Features
+## Start after cloning
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **React Native** - Build mobile apps using React
-- **Expo** - Tools for React Native development
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **Shared UI package** - shadcn/ui primitives live in `packages/ui`
-- **Shared mobile UI package** - Mobile apps consume HeroUI Native through `packages/mobile-ui`
-- **Hono** - Lightweight, performant server framework
-- **tRPC** - End-to-end type-safe APIs
-- **Bun** - Runtime environment
-- **Drizzle** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Authentication** - Better-Auth
-- **Oxlint** - Oxlint + Oxfmt (linting & formatting)
-- **Turborepo** - Optimized monorepo build system
+Clone the repository and move into it:
 
-## Getting Started
+```bash
+git clone <repository-url>
+cd ludika
+```
 
-First, install the dependencies:
+Install Bun 1.3.14 before installing project dependencies.
+
+Windows PowerShell:
+
+```powershell
+iex "& {$(irm https://bun.com/install.ps1)} -Version 1.3.14"
+```
+
+macOS or Linux:
+
+```bash
+curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
+```
+
+Open a new terminal if your shell does not find Bun, then check the version:
+
+```bash
+bun --version
+# 1.3.14
+```
+
+Install all workspace dependencies from the repository root:
 
 ```bash
 bun install
 ```
 
-## Database Setup
+Create local environment files before starting an app. Do not commit real credentials.
 
-This project uses PostgreSQL with Drizzle ORM.
+`apps/server/.env` must define:
 
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Apply the schema to your database:
-
-```bash
-bun run db:push
+```dotenv
+DATABASE_URL=<postgres-connection-string>
+BETTER_AUTH_SECRET=<at-least-32-character-secret>
+BETTER_AUTH_URL=http://localhost:3000
+CORS_ORIGIN=http://localhost:3001
 ```
 
-Then, run the development server:
+`apps/web/.env` must define:
 
-```bash
-bun run dev
+```dotenv
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
+Each mobile app needs its own `EXPO_PUBLIC_SERVER_URL` in `apps/ludika-client/.env` and `apps/ludika-driver/.env`. Use a server address reachable from the phone or emulator, for example `http://192.168.1.4:3000`.
 
-### Mobile development
+## Find your way around
 
-Both mobile applications use an Expo development client. Install the native client for each app from its own directory first (use the platform you are developing on):
+The `apps/` directory contains runnable products. The `packages/` directory contains code shared by those products.
 
-```bash
-bun --cwd apps/ludika-client run android # or: bun --cwd apps/ludika-client run ios
-bun --cwd apps/ludika-driver run android # or: bun --cwd apps/ludika-driver run ios
+```text
+apps/
+  ludika-client/   Expo app for clients
+  ludika-driver/   Expo app for drivers
+  server/          Hono and tRPC API server
+  web/             Next.js web app
+
+packages/
+  api/             tRPC router and API context
+  auth/            Better Auth setup
+  config/          Shared TypeScript configuration
+  db/              Drizzle database client and schema
+  env/             Typed server, web, and native environment variables
+  mobile-ui/       Shared HeroUI Native provider and exports
+  ui/              Shared web UI components and styles
 ```
 
-After the native clients are installed, start Metro from the repository root with the matching app command:
+Each workspace has its own README with file locations, dependency commands, and editing guidance:
+
+- [ludika-client](apps/ludika-client/README.md)
+- [ludika-driver](apps/ludika-driver/README.md)
+- [server](apps/server/README.md)
+- [web](apps/web/README.md)
+- [api](packages/api/README.md)
+- [auth](packages/auth/README.md)
+- [config](packages/config/README.md)
+- [db](packages/db/README.md)
+- [env](packages/env/README.md)
+- [mobile-ui](packages/mobile-ui/README.md)
+- [ui](packages/ui/README.md)
+
+## Run the project
+
+These are the only root scripts maintained for day-to-day development:
 
 ```bash
-bun run dev:client
-bun run dev:driver
+bun run dev          # Run every workspace with a dev script
+bun run build        # Build every workspace with a build script
+bun run dev:client   # Run the client mobile app and server
+bun run dev:driver   # Run the driver mobile app and server
+bun run dev:mobile   # Run both mobile apps and server
+bun run dev:web      # Run the web app and server
 ```
 
-Expo Go remains available as an optional fallback with `bun run dev:expo-go` from either mobile app directory.
+The mobile commands start Metro. Install or rebuild an Expo development client from the relevant mobile app directory when needed. See the mobile app READMEs for those commands.
 
-The API is running at [http://localhost:3000](http://localhost:3000).
+## Add a shared dependency
 
-## UI Customization
+There are two ways to share a dependency. Keep the distinction clear.
 
-React web apps in this stack share shadcn/ui primitives through `packages/ui`.
+### Create an internal workspace package
 
-- Change design tokens and global styles in `packages/ui/src/styles/globals.css`
-- Update shared primitives in `packages/ui/src/components/*`
-- Adjust shadcn aliases or style config in `packages/ui/components.json` and `apps/web/components.json`
+1. Create `packages/<name>` with a `package.json` named `@ludika/<name>`, a `src/` directory, and an `exports` map that matches the package's public entry points. Copy the small structure of a nearby package when choosing TypeScript settings.
+2. Run `bun install` from the repository root so Bun registers the new workspace.
+3. From the consuming workspace, add it with the workspace protocol. For example:
+
+```bash
+bun add @ludika/utils@workspace:*
+```
+
+4. Import only from the package's declared exports, for example `@ludika/<name>` or `@ludika/<name>/feature`. Add an export before using a new entry point.
+
+### Share an external dependency version
+
+Put the version in the root `workspaces.catalog` in `package.json`. In each consuming workspace, add `"<dependency>": "catalog:"` to the appropriate dependency section in that workspace's `package.json`.
+
+Run the install from the repository root:
+
+```bash
+bun install
+```
+
+Repeat the manifest entry for each consumer. Change the version once in the root catalog, then run `bun install` again.
+
+For a dependency used by only one workspace, run `bun add <package>` from that workspace. Never add an app or package dependency from the repository root just because the root has a `package.json`.
+
+## Make changes safely
+
+Edit code in the workspace that owns it. Add a new file next to the related feature, update the owning workspace's exports when a package file is public, and remove imports before deleting a file. Keep generated output such as `dist/` and `.next/` out of source changes. Update `bun.lock` when dependency manifests change.
 
 Mobile apps share HeroUI Native components through `packages/mobile-ui`.
 
@@ -93,68 +157,14 @@ Import shared components like this:
 import { Button } from "@ludika/ui/components/button";
 ```
 
-### Add app-specific blocks
+## Commit messages
 
-If you want to add app-specific blocks instead of shared primitives, run the shadcn CLI from `apps/web`.
+Use the affected workspace name in parentheses:
 
-## Deployment
-
-### Vercel Services
-
-- Target: web + server
-- Config: `vercel.json`
-- Link the project first: bun run deploy:setup
-- Local Vercel dev: bun run dev:vercel
-- Sync preview env: bun run env:preview
-- Sync production env: bun run env:production
-- Dry-run check (no upload): bun run deploy:check
-- Preview deploy: bun run deploy
-- Production deploy: bun run deploy:prod
-- Web requests under `/api/*` route to the server service and are rewritten before reaching the backend.
-  Vercel Services share project environment variables, but deploys do not upload local `.env` files automatically. Link the project with `vercel link`, then run the env sync command before your first deploy (otherwise the deployment starts with no env vars), or pass one-off envs with `vercel deploy -e KEY=value`.
-  Pass Vercel CLI flags to the env sync command directly, for example: `bun run env:production --scope your-team`.
-
-For more details, see the guide on [Deploying to Vercel](https://www.better-t-stack.dev/docs/guides/vercel).
-
-## Git Hooks and Formatting
-
-- Run checks: `bun run check`
-
-## Project Structure
-
-```
-ludika/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   ├── ludika-client/ # Ludika client mobile application (React Native, Expo)
-│   ├── ludika-driver/ # Ludika driver mobile application (React Native, Expo)
-│   └── server/      # Backend API (Hono, TRPC)
-├── packages/
-│   ├── ui/          # Shared shadcn/ui components and styles
-│   ├── mobile-ui/    # Shared HeroUI Native facade for mobile apps
-│   ├── api/         # API layer / business logic
-│   ├── auth/        # Authentication configuration & logic
-│   └── db/          # Database schema & queries
+```text
+feat(web): add account settings page
+fix(api): validate todo input
+chore(ludika-client): update Expo config
 ```
 
-## Available Scripts
-
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run dev:server`: Start only the server
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run dev:client`: Start the Ludika client React Native/Expo development server
-- `bun run dev:driver`: Start the Ludika driver React Native/Expo development server
-- `bun run db:push`: Push schema changes to database
-- `bun run db:generate`: Generate database client/types
-- `bun run db:migrate`: Run database migrations
-- `bun run db:studio`: Open database studio UI
-- `bun run check`: Run Oxlint and Oxfmt
-- `bun run deploy:setup`: Link this repo to a Vercel project (first-time setup)
-- `bun run dev:vercel`: Run the Vercel Services dev environment locally
-- `bun run env:preview`: Sync local env files to the Vercel preview environment
-- `bun run env:production`: Sync local env files to the Vercel production environment
-- `bun run deploy`: Create a Vercel preview deployment
-- `bun run deploy:prod`: Deploy to Vercel production
-- `bun run deploy:check`: Dry-run a deploy to preview framework detection and included files without uploading
+Use `feat` for a user-facing capability, `fix` for a correction, and `chore` for maintenance. The `app` part in `feat(app)`, `fix(app)`, and `chore(app)` means the affected app or package, such as `web`, `server`, `api`, or `ui`.
