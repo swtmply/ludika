@@ -1,0 +1,69 @@
+name: Create a Preview Update
+
+on:
+  pull_request:
+    branches: ["preview"]
+    types: ["opened", "reopened", "synchronize"]
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    type: fingerprint
+    environment: preview
+
+  get_android_build:
+    name: Find compatible Android development build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: development
+
+  # get_ios_build:
+  #   name: Find compatible iOS development build
+  #   needs: [fingerprint]
+  #   type: get-build
+  #   params:
+  #     fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+  #     profile: development
+
+  build_android:
+    name: Build Android development client
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: development
+
+  # build_ios:
+  #   name: Build iOS development client
+  #   needs: [get_ios_build]
+  #   if: ${{ !needs.get_ios_build.outputs.build_id }}
+  #   type: build
+  #   params:
+  #     platform: ios
+  #     profile: development
+
+  publish_preview_update:
+    name: Publish PR preview update
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    type: update
+    environment: preview
+    params:
+      branch: ${{ github.event.pull_request.head.ref }}
+      message: PR #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}
+
+  comment:
+    name: Comment preview on PR
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    after:
+      - build_android
+      # - build_ios
+      - publish_preview_update
+    type: github-comment

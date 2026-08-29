@@ -10,6 +10,7 @@ This project was created with [Better-T-Stack](https://github.com/AmanVarshney01
 - **Expo** - Tools for React Native development
 - **TailwindCSS** - Utility-first CSS for rapid UI development
 - **Shared UI package** - shadcn/ui primitives live in `packages/ui`
+- **Shared mobile UI package** - Mobile apps consume HeroUI Native through `packages/mobile-ui`
 - **Hono** - Lightweight, performant server framework
 - **tRPC** - End-to-end type-safe APIs
 - **Bun** - Runtime environment
@@ -47,7 +48,25 @@ bun run dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-Use the Expo Go app to run the mobile application.
+
+### Mobile development
+
+Both mobile applications use an Expo development client. Install the native client for each app from its own directory first (use the platform you are developing on):
+
+```bash
+bun --cwd apps/ludika-client run android # or: bun --cwd apps/ludika-client run ios
+bun --cwd apps/ludika-driver run android # or: bun --cwd apps/ludika-driver run ios
+```
+
+After the native clients are installed, start Metro from the repository root with the matching app command:
+
+```bash
+bun run dev:client
+bun run dev:driver
+```
+
+Expo Go remains available as an optional fallback with `bun run dev:expo-go` from either mobile app directory.
+
 The API is running at [http://localhost:3000](http://localhost:3000).
 
 ## UI Customization
@@ -57,6 +76,8 @@ React web apps in this stack share shadcn/ui primitives through `packages/ui`.
 - Change design tokens and global styles in `packages/ui/src/styles/globals.css`
 - Update shared primitives in `packages/ui/src/components/*`
 - Adjust shadcn aliases or style config in `packages/ui/components.json` and `apps/web/components.json`
+
+Mobile apps share HeroUI Native components through `packages/mobile-ui`.
 
 ### Add more shared components
 
@@ -105,10 +126,12 @@ For more details, see the guide on [Deploying to Vercel](https://www.better-t-st
 ludika/
 ├── apps/
 │   ├── web/         # Frontend application (Next.js)
-│   ├── native/      # Mobile application (React Native, Expo)
+│   ├── ludika-client/ # Ludika client mobile application (React Native, Expo)
+│   ├── ludika-driver/ # Ludika driver mobile application (React Native, Expo)
 │   └── server/      # Backend API (Hono, TRPC)
 ├── packages/
 │   ├── ui/          # Shared shadcn/ui components and styles
+│   ├── mobile-ui/    # Shared HeroUI Native facade for mobile apps
 │   ├── api/         # API layer / business logic
 │   ├── auth/        # Authentication configuration & logic
 │   └── db/          # Database schema & queries
@@ -121,7 +144,8 @@ ludika/
 - `bun run dev:web`: Start only the web application
 - `bun run dev:server`: Start only the server
 - `bun run check-types`: Check TypeScript types across all apps
-- `bun run dev:native`: Start the React Native/Expo development server
+- `bun run dev:client`: Start the Ludika client React Native/Expo development server
+- `bun run dev:driver`: Start the Ludika driver React Native/Expo development server
 - `bun run db:push`: Push schema changes to database
 - `bun run db:generate`: Generate database client/types
 - `bun run db:migrate`: Run database migrations
