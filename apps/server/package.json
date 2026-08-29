@@ -6,7 +6,7 @@
     "build": "bun build ./src/index.ts --outfile ./dist/index.mjs --target node --format esm --packages bundle",
     "check-types": "tsc -b",
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run --cwd ../.. --env-file apps/server/.env --hot apps/server/src/index.ts",
     "start": "bun run dist/index.mjs"
   },
   "dependencies": {

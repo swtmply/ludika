@@ -1,0 +1,11 @@
+name: Branch cleanup
+
+on:
+  ref_delete:
+    branches: ["*", "!main"]
+
+jobs:
+  delete-update-branch:
+    type: branch-delete
+    params:
+      branch_name: ${{ github.ref_name }}

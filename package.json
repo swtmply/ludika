@@ -48,6 +48,8 @@
     "deploy": "vercel deploy",
     "deploy:prod": "vercel deploy --prod",
     "deploy:check": "vercel deploy --dry",
+    "clean": "git clean -Xdf -e \"!.env*\"",
+    "clean:dry": "git clean -Xdn -e \"!.env*\"",
     "check": "oxlint && oxfmt --write"
   },
   "dependencies": {

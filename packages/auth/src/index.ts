@@ -14,7 +14,13 @@ export function createAuth() {
 
       schema: schema,
     }),
-    trustedOrigins: [env.CORS_ORIGIN, "ludika://", "exp://", "http://localhost:8081"],
+    trustedOrigins: [
+      env.CORS_ORIGIN,
+      "ludika-client://",
+      "ludika-driver://",
+      "exp://",
+      "http://localhost:8081",
+    ],
     emailAndPassword: {
       enabled: true,
     },

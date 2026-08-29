@@ -1,0 +1,32 @@
+{
+  "name": "@ludika/mobile-ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.tsx",
+      "default": "./src/index.tsx"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@ludika/config": "workspace:*",
+    "@types/react": "~19.2.18",
+    "heroui-native": "^1.0.8",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-gesture-handler": "~2.32.0",
+    "typescript": "^6.0.3",
+    "uniwind": "^1.11.0"
+  },
+  "peerDependencies": {
+    "heroui-native": "^1.0.8",
+    "react": ">=19.0.0",
+    "react-native": ">=0.81.0",
+    "react-native-gesture-handler": "^2.28.0",
+    "uniwind": "^1.11.0"
+  }
+}
