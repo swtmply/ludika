@@ -30,7 +30,7 @@ jobs:
           HEAD_SHA: ${{ github.sha }}
         run: |
           bash scripts/eas-affected.sh \
-            ludika-client \
+            ludika-driver \
             "${{ github.event.before }}" \
             "${{ github.sha }}"
 
