@@ -45,13 +45,13 @@ jobs:
       fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
       profile: preview
 
-  get_ios_build:
-    name: Find compatible iOS preview build
-    needs: [fingerprint]
-    type: get-build
-    params:
-      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
-      profile: preview
+  # get_ios_build:
+  #   name: Find compatible iOS preview build
+  #   needs: [fingerprint]
+  #   type: get-build
+  #   params:
+  #     fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+  #     profile: preview
 
   build_android:
     name: Build Android preview
@@ -62,14 +62,14 @@ jobs:
       platform: android
       profile: preview
 
-  build_ios:
-    name: Build iOS preview
-    needs: [get_ios_build]
-    if: ${{ !needs.get_ios_build.outputs.build_id }}
-    type: build
-    params:
-      platform: ios
-      profile: preview
+  # build_ios:
+  #   name: Build iOS preview
+  #   needs: [get_ios_build]
+  #   if: ${{ !needs.get_ios_build.outputs.build_id }}
+  #   type: build
+  #   params:
+  #     platform: ios
+  #     profile: preview
 
   publish_preview_update:
     name: Publish preview update
@@ -80,3 +80,8 @@ jobs:
     params:
       channel: preview
       message: ${{ github.commit_message }}
+    hooks:
+      after_install_node_modules:
+        - name: Build workspace dependencies
+          working_directory: ../..
+          run: bun run build --filter=ludika-client
