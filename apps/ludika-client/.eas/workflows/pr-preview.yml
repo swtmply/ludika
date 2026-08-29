@@ -4,15 +4,38 @@ on:
   pull_request:
     branches: ["preview"]
     types: ["opened", "reopened", "synchronize"]
+    paths:
+      - apps/ludika-client/**
+      - packages/**
+      - scripts/eas-affected.sh
+      - package.json
+      - bun.lock
+      - turbo.json
 
 concurrency:
   cancel_in_progress: true
   group: ${{ workflow.filename }}-${{ github.ref }}
 
 jobs:
+  detect_changes:
+    name: Detect relevant changes
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    outputs:
+      affected: ${{ steps.affected.outputs.affected }}
+    steps:
+      - uses: eas/checkout
+      - id: affected
+        name: Check whether ludika-client is affected
+        working_directory: ../..
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: bash scripts/eas-affected.sh ludika-client "$BASE_SHA" "$HEAD_SHA"
+
   fingerprint:
     name: Fingerprint
-    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    needs: [detect_changes]
+    if: ${{ needs.detect_changes.outputs.affected == 'true' }}
     type: fingerprint
     environment: preview
 
@@ -52,7 +75,8 @@ jobs:
 
   publish_preview_update:
     name: Publish PR preview update
-    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
+    needs: [detect_changes]
+    if: ${{ needs.detect_changes.outputs.affected == 'true' }}
     type: update
     environment: preview
     params:
@@ -61,9 +85,10 @@ jobs:
 
   comment:
     name: Comment preview on PR
-    if: ${{ startsWith(github.event.pull_request.head.ref, 'feat/') || startsWith(github.event.pull_request.head.ref, 'fix/') }}
     after:
+      - detect_changes
       - build_android
       # - build_ios
       - publish_preview_update
+    if: ${{ after.detect_changes.outputs.affected == 'true' }}
     type: github-comment
