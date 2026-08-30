@@ -1,5 +1,6 @@
 import { Link, Stack } from "expo-router";
-import { Button, Surface } from "@ludika/mobile-ui";
+import { Button } from "heroui-native/button";
+import { Surface } from "heroui-native/surface";
 import { Text, View } from "react-native";
 
 import { Container } from "@/components/container";

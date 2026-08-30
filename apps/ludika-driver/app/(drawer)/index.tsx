@@ -1,11 +1,9 @@
-import {
-  CheckmarkCircle01Icon,
-  CancelCircleIcon,
-  HourglassIcon,
-} from "@hugeicons/core-free-icons";
+import { CheckmarkCircle01Icon, CancelCircleIcon, HourglassIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Chip, useThemeColor } from "@ludika/mobile-ui";
+import { Card } from "heroui-native/card";
+import { Chip } from "heroui-native/chip";
+import { useThemeColor } from "heroui-native/hooks";
 import { Text, View, Pressable } from "react-native";
 
 import { Container } from "@/components/container";

@@ -7,7 +7,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Link } from "expo-router";
 import { Drawer } from "expo-router/drawer";
-import { useThemeColor } from "@ludika/mobile-ui";
+import { useThemeColor } from "heroui-native/hooks";
 import React, { useCallback } from "react";
 import { Pressable, Text } from "react-native";
 

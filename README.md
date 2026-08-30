@@ -74,7 +74,7 @@ packages/
   config/          Shared TypeScript configuration
   db/              Drizzle database client and schema
   env/             Typed server, web, and native environment variables
-  mobile-ui/       Shared HeroUI Native provider and exports
+  mobile-ui/       Shared HeroUI Native provider wrapper
   ui/              Shared web UI components and styles
 ```
 
@@ -141,7 +141,7 @@ For a dependency used by only one workspace, run `bun add <package>` from that w
 
 Edit code in the workspace that owns it. Add a new file next to the related feature, update the owning workspace's exports when a package file is public, and remove imports before deleting a file. Keep generated output such as `dist/` and `.next/` out of source changes. Update `bun.lock` when dependency manifests change.
 
-Mobile apps share HeroUI Native components through `packages/mobile-ui`.
+Mobile apps use `@ludika/mobile-ui` for the shared provider wrapper and import HeroUI Native components directly from granular paths such as `heroui-native/button`.
 
 ### Add more shared components
 

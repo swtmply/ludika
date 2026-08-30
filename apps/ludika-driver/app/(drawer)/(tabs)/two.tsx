@@ -1,4 +1,4 @@
-import { Card } from "@ludika/mobile-ui";
+import { Card } from "heroui-native/card";
 import { View } from "react-native";
 
 import { Container } from "@/components/container";

@@ -1,10 +1,10 @@
 # Mobile UI package
 
-Shared React Native UI exports for the client and driver apps. It wraps HeroUI Native with a `MobileUIProvider` that also provides the gesture-handler root view.
+Shared provider setup for the client and driver apps. It wraps HeroUI Native with a `MobileUIProvider` that also provides the gesture-handler root view.
 
 ## Key files
 
-- `src/index.tsx` exports `MobileUIProvider` and re-exports HeroUI Native.
+- `src/index.tsx` exports the shared `MobileUIProvider` wrapper. Import HeroUI Native components directly from their granular package paths in app code.
 - `src/uniwind-env.d.ts` contains Uniwind type support.
 - `tsconfig.json` contains the package TypeScript settings.
 
@@ -13,7 +13,6 @@ Add a shared mobile component as a file under `src/` when both mobile apps shoul
 Both mobile apps import this package as `@ludika/mobile-ui`. It has no build script, but `bun run check-types` is available from this directory and Turbo runs it when that task is requested.
 
 ## Dependencies and commands
-
 
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
