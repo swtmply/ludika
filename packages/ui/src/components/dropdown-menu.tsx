@@ -1,8 +1,12 @@
 "use client";
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
+import {
+  ArrowRight01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@ludika/ui/lib/utils";
-import { ChevronRightIcon, CheckIcon } from "lucide-react";
 import * as React from "react";
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
@@ -115,7 +119,11 @@ function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRightIcon className="cn-rtl-flip ml-auto" />
+      <HugeiconsIcon
+        icon={ArrowRight01Icon}
+        strokeWidth={2}
+        className="cn-rtl-flip ml-auto"
+      />
     </MenuPrimitive.SubmenuTrigger>
   );
 }
@@ -169,7 +177,7 @@ function DropdownMenuCheckboxItem({
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <MenuPrimitive.CheckboxItemIndicator>
-          <CheckIcon />
+          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
         </MenuPrimitive.CheckboxItemIndicator>
       </span>
       {children}
@@ -204,7 +212,7 @@ function DropdownMenuRadioItem({
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <MenuPrimitive.RadioItemIndicator>
-          <CheckIcon />
+          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
         </MenuPrimitive.RadioItemIndicator>
       </span>
       {children}

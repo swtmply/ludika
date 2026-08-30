@@ -1,5 +1,7 @@
 "use client";
 
+import { Delete02Icon, LoaderCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@ludika/ui/components/button";
 import {
   Card,
@@ -11,7 +13,6 @@ import {
 import { Checkbox } from "@ludika/ui/components/checkbox";
 import { Input } from "@ludika/ui/components/input";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader2, Trash2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { trpc } from "@/utils/trpc";
@@ -76,13 +77,17 @@ export default function TodosPage() {
               disabled={createMutation.isPending}
             />
             <Button type="submit" disabled={createMutation.isPending || !newTodoText.trim()}>
-              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}
+              {createMutation.isPending ? (
+                <HugeiconsIcon icon={LoaderCircleIcon} className="animate-spin" />
+              ) : (
+                "Add"
+              )}
             </Button>
           </form>
 
           {todos.isLoading ? (
             <div className="flex justify-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <HugeiconsIcon icon={LoaderCircleIcon} className="h-6 w-6 animate-spin" />
             </div>
           ) : todos.data?.length === 0 ? (
             <p className="py-4 text-center">No todos yet. Add one above!</p>
@@ -112,7 +117,7 @@ export default function TodosPage() {
                     onClick={() => handleDeleteTodo(todo.id)}
                     aria-label="Delete todo"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <HugeiconsIcon icon={Delete02Icon} />
                   </Button>
                 </li>
               ))}

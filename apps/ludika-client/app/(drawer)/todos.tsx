@@ -1,4 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Add01Icon,
+  CheckmarkSquare01Icon,
+  Delete01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Button,
@@ -111,8 +116,8 @@ export default function TodosScreen() {
               {createMutation.isPending ? (
                 <Spinner size="sm" color="default" />
               ) : (
-                <Ionicons
-                  name="add"
+                <HugeiconsIcon
+                  icon={Add01Icon}
                   size={20}
                   color={
                     createMutation.isPending || !newTodoText.trim() ? mutedColor : foregroundColor
@@ -132,7 +137,7 @@ export default function TodosScreen() {
 
         {todos?.data && todos.data.length === 0 && !isLoading && (
           <Surface variant="secondary" className="items-center justify-center py-10 rounded-lg">
-            <Ionicons name="checkbox-outline" size={40} color={mutedColor} />
+            <HugeiconsIcon icon={CheckmarkSquare01Icon} size={40} color={mutedColor} />
             <Text className="text-foreground font-medium mt-3">No tasks yet</Text>
             <Text className="text-muted text-xs mt-1">Add your first task to get started</Text>
           </Surface>
@@ -160,7 +165,7 @@ export default function TodosScreen() {
                     onPress={() => handleDeleteTodo(todo.id)}
                     size="sm"
                   >
-                    <Ionicons name="trash-outline" size={16} color={dangerColor} />
+                    <HugeiconsIcon icon={Delete01Icon} size={16} color={dangerColor} />
                   </Button>
                 </View>
               </Surface>
