@@ -1,14 +1,12 @@
 import { useForm } from "@tanstack/react-form";
-import {
-  Button,
-  FieldError,
-  Input,
-  Label,
-  Spinner,
-  Surface,
-  TextField,
-  useToast,
-} from "@ludika/mobile-ui";
+import { Button } from "heroui-native/button";
+import { FieldError } from "heroui-native/field-error";
+import { Input } from "heroui-native/input";
+import { Label } from "heroui-native/label";
+import { Spinner } from "heroui-native/spinner";
+import { Surface } from "heroui-native/surface";
+import { TextField } from "heroui-native/text-field";
+import { useToast } from "heroui-native/toast";
 import { useRef } from "react";
 import { Text, TextInput, View } from "react-native";
 import z from "zod";

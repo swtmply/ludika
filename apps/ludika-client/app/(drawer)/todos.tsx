@@ -1,20 +1,14 @@
-import {
-  Add01Icon,
-  CheckmarkSquare01Icon,
-  Delete01Icon,
-} from "@hugeicons/core-free-icons";
+import { Add01Icon, CheckmarkSquare01Icon, Delete01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  Button,
-  Checkbox,
-  Chip,
-  Spinner,
-  Surface,
-  Input,
-  TextField,
-  useThemeColor,
-} from "@ludika/mobile-ui";
+import { Button } from "heroui-native/button";
+import { Checkbox } from "heroui-native/checkbox";
+import { Chip } from "heroui-native/chip";
+import { Input } from "heroui-native/input";
+import { Spinner } from "heroui-native/spinner";
+import { Surface } from "heroui-native/surface";
+import { TextField } from "heroui-native/text-field";
+import { useThemeColor } from "heroui-native/hooks";
 import { useState } from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
 

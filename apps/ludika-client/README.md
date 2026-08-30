@@ -14,7 +14,7 @@ The client-facing Expo and React Native app. It runs Metro on port 8081 and call
 
 ## Make changes
 
-Add a screen under `app/` when it needs a route. Add reusable client UI under `components/` and keep shared mobile components in `packages/mobile-ui`. When deleting a route or component, remove its imports and navigation links first. Do not edit generated Expo type files unless the Expo tooling requires it.
+Add a screen under `app/` when it needs a route. Add reusable client UI under `components/`. Use `@ludika/mobile-ui` for the shared provider wrapper and import HeroUI Native components directly from their granular package paths. When deleting a route or component, remove its imports and navigation links first. Do not edit generated Expo type files unless the Expo tooling requires it.
 
 The app imports shared code from `@ludika/api`, `@ludika/env`, and `@ludika/mobile-ui`. A new public entry point in a package must be added to that package's exports before importing it here.
 
@@ -27,4 +27,6 @@ For ordinary single-workspace dependencies, run `bun add <package>` or `bun remo
 
 For catalog dependencies, add the version to the root `workspaces.catalog` and set `"<dependency>": "catalog:"` in this workspace's `package.json`, then run `bun install` from the repository root. For an internal package, a copyable example is `bun add @ludika/utils@workspace:*`.
 
-Start the development client with `bun run dev`. Install a native development client with `bun run android` or `bun run ios`. The root `bun run dev:client` starts this app and the server. This workspace has no `build` script, so the root build does not build a native binary.
+Start the development client with `bun run dev`. Install a native development client with `bun run android` or `bun run ios`. The root `bun run dev:client` starts this app and the server.
+
+Build on EAS with `bun run build:dev` for a development client or `bun run build:preview` for an internal preview build. Add `-- --platform android` or `-- --platform ios` to target one platform.

@@ -14,6 +14,12 @@
         "DATABASE_URL_DIRECT"
       ]
     },
+    "build:dev": {
+      "cache": false
+    },
+    "build:preview": {
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },

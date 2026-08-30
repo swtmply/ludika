@@ -74,7 +74,7 @@ packages/
   config/          Shared TypeScript configuration
   db/              Drizzle database client and schema
   env/             Typed server, web, and native environment variables
-  mobile-ui/       Shared HeroUI Native provider and exports
+  mobile-ui/       Shared HeroUI Native provider wrapper
   ui/              Shared web UI components and styles
 ```
 
@@ -103,9 +103,19 @@ bun run dev:client   # Run the client mobile app and server
 bun run dev:driver   # Run the driver mobile app and server
 bun run dev:mobile   # Run both mobile apps and server
 bun run dev:web      # Run the web app and server
+bun run build:eas:dev      # Build development clients for both mobile apps on EAS
+bun run build:eas:preview  # Build preview clients for both mobile apps on EAS
 ```
 
-The mobile commands start Metro. Install or rebuild an Expo development client from the relevant mobile app directory when needed. See the mobile app READMEs for those commands.
+The mobile commands start Metro. The EAS commands build both mobile apps in parallel and expect the EAS CLI to be installed and authenticated. To build one app or target one platform, run the workspace script from that app directory:
+
+```bash
+cd apps/ludika-client
+bun run build:dev -- --platform android
+bun run build:preview -- --platform ios
+```
+
+Use the same commands from `apps/ludika-driver` for the driver app. Omit `--platform` to build all configured platforms.
 
 ## Add a shared dependency
 
@@ -141,7 +151,7 @@ For a dependency used by only one workspace, run `bun add <package>` from that w
 
 Edit code in the workspace that owns it. Add a new file next to the related feature, update the owning workspace's exports when a package file is public, and remove imports before deleting a file. Keep generated output such as `dist/` and `.next/` out of source changes. Update `bun.lock` when dependency manifests change.
 
-Mobile apps share HeroUI Native components through `packages/mobile-ui`.
+Mobile apps use `@ludika/mobile-ui` for the shared provider wrapper and import HeroUI Native components directly from granular paths such as `heroui-native/button`.
 
 ### Add more shared components
 
