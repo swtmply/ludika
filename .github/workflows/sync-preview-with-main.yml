@@ -1,0 +1,47 @@
+name: Sync Preview with Main
+
+on:
+  push:
+    branches:
+      - main
+
+  # Lets you run it manually if needed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-preview-with-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Rebase preview onto main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout preview
+        uses: actions/checkout@v7
+        with:
+          ref: preview
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch main and preview
+        run: |
+          git fetch origin main
+          git fetch origin preview
+
+      - name: Rebase preview onto main
+        run: |
+          git checkout preview
+          git rebase origin/main
+
+      - name: Push updated preview
+        run: |
+          git push origin preview --force-with-lease
