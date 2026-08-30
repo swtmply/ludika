@@ -16,6 +16,10 @@
       "autoIncrement": true,
       "distribution": "internal",
       "channel": "preview"
+    },
+    "preview-debug": {
+      "extends": "preview",
+      "developmentClient": true
     }
   },
   "submit": {
