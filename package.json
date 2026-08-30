@@ -38,7 +38,9 @@
     "dev:client": "turbo run dev --filter=ludika-client --filter=server",
     "dev:driver": "turbo run dev --filter=ludika-driver --filter=server",
     "dev:mobile": "turbo run dev --filter=ludika-client --filter=ludika-driver --filter=server",
-    "dev:web": "turbo run dev --filter=web --filter=server"
+    "dev:web": "turbo run dev --filter=web --filter=server",
+    "clean": "git clean -Xdf -e \"!.env*\"",
+    "clean:dry": "git clean -Xdn -e \"!.env*\""
   },
   "dependencies": {
     "@ludika/env": "workspace:*",
