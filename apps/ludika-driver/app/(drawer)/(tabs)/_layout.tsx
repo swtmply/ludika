@@ -1,4 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
+import { CompassIcon, Home01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Tabs } from "expo-router";
 import { useThemeColor } from "@ludika/mobile-ui";
 
@@ -27,14 +28,18 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <HugeiconsIcon icon={Home01Icon} size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
           title: "Explore",
-          tabBarIcon: ({ color, size }) => <Ionicons name="compass" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <HugeiconsIcon icon={CompassIcon} size={size} color={color} />
+          ),
         }}
       />
     </Tabs>

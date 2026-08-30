@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowDown02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@ludika/ui/components/button";
 import { cn } from "@ludika/ui/lib/utils";
 import {
@@ -8,7 +10,6 @@ import {
   useMessageScrollerScrollable,
   useMessageScrollerVisibility,
 } from "@shadcn/react/message-scroller";
-import { ArrowDownIcon } from "lucide-react";
 import * as React from "react";
 
 function MessageScrollerProvider(
@@ -106,7 +107,7 @@ function MessageScrollerButton({
     >
       {children ?? (
         <>
-          <ArrowDownIcon />
+          <HugeiconsIcon icon={ArrowDown02Icon} strokeWidth={2} />
           <span className="sr-only">
             {direction === "end" ? "Scroll to end" : "Scroll to start"}
           </span>

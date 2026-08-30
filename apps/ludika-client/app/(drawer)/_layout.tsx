@@ -1,4 +1,10 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Add01Icon,
+  BorderBottom01Icon,
+  CheckmarkSquare01Icon,
+  Home01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Link } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useThemeColor } from "@ludika/mobile-ui";
@@ -34,8 +40,8 @@ function DrawerLayout() {
             <Text style={{ color: focused ? color : themeColorForeground }}>Home</Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
-            <Ionicons
-              name="home-outline"
+            <HugeiconsIcon
+              icon={Home01Icon}
               size={size}
               color={focused ? color : themeColorForeground}
             />
@@ -50,8 +56,8 @@ function DrawerLayout() {
             <Text style={{ color: focused ? color : themeColorForeground }}>Tabs</Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
-            <MaterialIcons
-              name="border-bottom"
+            <HugeiconsIcon
+              icon={BorderBottom01Icon}
               size={size}
               color={focused ? color : themeColorForeground}
             />
@@ -59,7 +65,7 @@ function DrawerLayout() {
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable className="mr-4">
-                <Ionicons name="add-outline" size={24} color={themeColorForeground} />
+                <HugeiconsIcon icon={Add01Icon} size={24} color={themeColorForeground} />
               </Pressable>
             </Link>
           ),
@@ -73,8 +79,8 @@ function DrawerLayout() {
             <Text style={{ color: focused ? color : themeColorForeground }}>Todos</Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
-            <Ionicons
-              name="checkbox-outline"
+            <HugeiconsIcon
+              icon={CheckmarkSquare01Icon}
               size={size}
               color={focused ? color : themeColorForeground}
             />

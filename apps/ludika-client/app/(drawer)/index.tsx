@@ -1,4 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
+import {
+  CancelCircleIcon,
+  CheckmarkCircle01Icon,
+  HourglassIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useQuery } from "@tanstack/react-query";
 import { Card, Chip, useThemeColor } from "@ludika/mobile-ui";
 import { Text, View, Pressable } from "react-native";
@@ -67,12 +72,12 @@ export default function Home() {
                     : "API Disconnected"}
               </Card.Description>
             </View>
-            {isLoading && <Ionicons name="hourglass-outline" size={20} color={mutedColor} />}
+            {isLoading && <HugeiconsIcon icon={HourglassIcon} size={20} color={mutedColor} />}
             {!isLoading && isConnected && (
-              <Ionicons name="checkmark-circle" size={20} color={successColor} />
+              <HugeiconsIcon icon={CheckmarkCircle01Icon} size={20} color={successColor} />
             )}
             {!isLoading && !isConnected && (
-              <Ionicons name="close-circle" size={20} color={dangerColor} />
+              <HugeiconsIcon icon={CancelCircleIcon} size={20} color={dangerColor} />
             )}
           </View>
         </Card>
