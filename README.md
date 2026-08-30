@@ -103,9 +103,19 @@ bun run dev:client   # Run the client mobile app and server
 bun run dev:driver   # Run the driver mobile app and server
 bun run dev:mobile   # Run both mobile apps and server
 bun run dev:web      # Run the web app and server
+bun run build:eas:dev      # Build development clients for both mobile apps on EAS
+bun run build:eas:preview  # Build preview clients for both mobile apps on EAS
 ```
 
-The mobile commands start Metro. Install or rebuild an Expo development client from the relevant mobile app directory when needed. See the mobile app READMEs for those commands.
+The mobile commands start Metro. The EAS commands build both mobile apps in parallel and expect the EAS CLI to be installed and authenticated. To build one app or target one platform, run the workspace script from that app directory:
+
+```bash
+cd apps/ludika-client
+bun run build:dev -- --platform android
+bun run build:preview -- --platform ios
+```
+
+Use the same commands from `apps/ludika-driver` for the driver app. Omit `--platform` to build all configured platforms.
 
 ## Add a shared dependency
 

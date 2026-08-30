@@ -57,14 +57,14 @@ jobs:
   #     fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
   #     profile: preview
 
-  build_android:
-    name: Build Android preview
-    needs: [get_android_build]
-    if: ${{ !needs.get_android_build.outputs.build_id }}
-    type: build
-    params:
-      platform: android
-      profile: preview
+  # build_android:
+  #   name: Build Android preview
+  #   needs: [get_android_build]
+  #   if: ${{ !needs.get_android_build.outputs.build_id }}
+  #   type: build
+  #   params:
+  #     platform: android
+  #     profile: preview
 
   # build_ios:
   #   name: Build iOS preview
