@@ -51,6 +51,12 @@
         "projectId": "7aaddfb7-ff8f-49ad-9c7e-adb8e455947c"
       }
     },
-    "owner": "ember-knights"
+    "owner": "ember-knights",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7aaddfb7-ff8f-49ad-9c7e-adb8e455947c"
+    }
   }
 }
