@@ -1,7 +1,7 @@
 import { CompassIcon, Home01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Tabs } from "expo-router";
-import { useThemeColor } from "@ludika/mobile-ui";
+import { useThemeColor } from "heroui-native/hooks";
 
 export default function TabLayout() {
   const themeColorForeground = useThemeColor("foreground");
