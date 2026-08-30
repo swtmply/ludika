@@ -1,11 +1,18 @@
 import { expoClient } from "@better-auth/expo/client";
-import { env } from "@ludika/env/native";
 import { createAuthClient } from "better-auth/react";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 
+import {
+  authBaseURL,
+  getVercelProtectionHeaders,
+} from "@/lib/server-config";
+
 export const authClient = createAuthClient({
-  baseURL: env.EXPO_PUBLIC_SERVER_URL,
+  baseURL: authBaseURL,
+  fetchOptions: {
+    headers: getVercelProtectionHeaders(),
+  },
   plugins: [
     expoClient({
       scheme: Constants.expoConfig?.scheme as string,
