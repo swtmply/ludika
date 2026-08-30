@@ -1,4 +1,8 @@
-import { CheckmarkCircle01Icon, CancelCircleIcon, HourglassIcon } from "@hugeicons/core-free-icons";
+import {
+  CheckmarkCircle01Icon,
+  CancelCircleIcon,
+  HourglassIcon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "heroui-native/card";
@@ -26,7 +30,9 @@ export default function Home() {
   return (
     <Container className="p-6">
       <View className="py-4 mb-6">
-        <Text className="text-4xl font-bold text-foreground mb-2">BETTER T STACK</Text>
+        <Text className="text-4xl font-bold text-foreground mb-2">
+          DRIVER APP
+        </Text>
       </View>
 
       {session?.user ? (
@@ -50,7 +56,11 @@ export default function Home() {
       <Card variant="secondary" className="p-6">
         <View className="flex-row items-center justify-between mb-4">
           <Card.Title>System Status</Card.Title>
-          <Chip variant="secondary" color={isConnected ? "success" : "danger"} size="sm">
+          <Chip
+            variant="secondary"
+            color={isConnected ? "success" : "danger"}
+            size="sm"
+          >
             <Chip.Label>{isConnected ? "LIVE" : "OFFLINE"}</Chip.Label>
           </Chip>
         </View>
@@ -61,7 +71,9 @@ export default function Home() {
               className={`w-3 h-3 rounded-full mr-3 ${isConnected ? "bg-success" : "bg-muted"}`}
             />
             <View className="flex-1">
-              <Text className="text-foreground font-medium mb-1">TRPC Backend</Text>
+              <Text className="text-foreground font-medium mb-1">
+                TRPC Backend
+              </Text>
               <Card.Description>
                 {isLoading
                   ? "Checking connection..."
@@ -70,12 +82,26 @@ export default function Home() {
                     : "API Disconnected"}
               </Card.Description>
             </View>
-            {isLoading && <HugeiconsIcon icon={HourglassIcon} size={20} color={mutedColor} />}
+            {isLoading && (
+              <HugeiconsIcon
+                icon={HourglassIcon}
+                size={20}
+                color={mutedColor}
+              />
+            )}
             {!isLoading && isConnected && (
-              <HugeiconsIcon icon={CheckmarkCircle01Icon} size={20} color={successColor} />
+              <HugeiconsIcon
+                icon={CheckmarkCircle01Icon}
+                size={20}
+                color={successColor}
+              />
             )}
             {!isLoading && !isConnected && (
-              <HugeiconsIcon icon={CancelCircleIcon} size={20} color={dangerColor} />
+              <HugeiconsIcon
+                icon={CancelCircleIcon}
+                size={20}
+                color={dangerColor}
+              />
             )}
           </View>
         </Card>
@@ -83,7 +109,9 @@ export default function Home() {
 
       <Card variant="secondary" className="mt-6 p-4">
         <Card.Title className="mb-3">Private Data</Card.Title>
-        {privateData && <Card.Description>{privateData.data?.message}</Card.Description>}
+        {privateData && (
+          <Card.Description>{privateData.data?.message}</Card.Description>
+        )}
       </Card>
 
       {!session?.user && (
