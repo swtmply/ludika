@@ -1,7 +1,9 @@
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Tick01Icon } from "@hugeicons/core-free-icons";
 import { router } from "expo-router";
-import { Button, Surface, useThemeColor } from "@ludika/mobile-ui";
+import { Button } from "heroui-native/button";
+import { Surface } from "heroui-native/surface";
+import { useThemeColor } from "heroui-native/hooks";
 import { Text, View } from "react-native";
 
 import { Container } from "@/components/container";

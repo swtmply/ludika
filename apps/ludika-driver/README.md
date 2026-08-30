@@ -14,7 +14,7 @@ The driver-facing Expo and React Native app. It runs Metro on port 8082 and call
 
 ## Make changes
 
-Add a screen under `app/` when it needs a route. Add reusable driver UI under `components/` and keep shared mobile components in `packages/mobile-ui`. When deleting a route or component, remove its imports and navigation links first. Do not edit generated Expo type files unless the Expo tooling requires it.
+Add a screen under `app/` when it needs a route. Add reusable driver UI under `components/`. Use `@ludika/mobile-ui` for the shared provider wrapper and import HeroUI Native components directly from their granular package paths. When deleting a route or component, remove its imports and navigation links first. Do not edit generated Expo type files unless the Expo tooling requires it.
 
 The app imports shared code from `@ludika/api`, `@ludika/env`, and `@ludika/mobile-ui`. A new public entry point in a package must be added to that package's exports before importing it here.
 

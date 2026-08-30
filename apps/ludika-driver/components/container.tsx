@@ -1,4 +1,4 @@
-import { cn } from "@ludika/mobile-ui";
+import { cn } from "heroui-native/utils";
 import { type PropsWithChildren } from "react";
 import { ScrollView, View, type ScrollViewProps, type ViewProps } from "react-native";
 import Animated, { type AnimatedProps } from "react-native-reanimated";

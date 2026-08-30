@@ -5,7 +5,7 @@ import { Platform, Pressable } from "react-native";
 import Animated, { FadeOut, ZoomIn } from "react-native-reanimated";
 
 import { useAppTheme } from "@/contexts/app-theme-context";
-import { useThemeColor } from "@ludika/mobile-ui";
+import { useThemeColor } from "heroui-native/hooks";
 
 export function ThemeToggle() {
   const { toggleTheme, isLight } = useAppTheme();
