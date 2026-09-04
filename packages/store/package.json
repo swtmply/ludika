@@ -1,0 +1,31 @@
+{
+  "name": "@ludika/store",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./security": {
+      "types": "./src/useSecurityStore.ts",
+      "default": "./src/useSecurityStore.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ludika/env": "workspace:*",
+    "jail-monkey": "^3.0.0",
+    "react-native-geolocation-service": "^5.3.1",
+    "react-native-turbo-mock-location-detector": "^2.3.1",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@ludika/config": "workspace:*",
+    "@types/react": "~19.2.18",
+    "react-native": "0.86.3",
+    "typescript": "~6.0.3"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.81.0"
+  }
+}

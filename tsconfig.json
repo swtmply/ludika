@@ -1,3 +1,6 @@
 {
-  "extends": "@ludika/config/tsconfig.base.json"
+  "extends": "@ludika/config/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "react-native"]
+  }
 }
