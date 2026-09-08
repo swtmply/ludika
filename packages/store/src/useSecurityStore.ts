@@ -1,4 +1,5 @@
 import JailMonkey from "jail-monkey";
+import DeviceInfo from "react-native-device-info";
 import {
   isMockingLocation,
   MockLocationDetectorErrorCode,
@@ -7,6 +8,23 @@ import {
 import { PermissionsAndroid, Platform } from "react-native";
 import { create } from "zustand";
 import { env } from "@ludika/env/native";
+
+const TRUSTED_INSTALLERS_ANDROID = [
+  "com.android.vending", // Google Play Store
+  "com.google.android.feedback", // Google Play review / internal testing
+  "com.sec.android.app.samsungapps", // Samsung Galaxy Store
+];
+
+const TRUSTED_INSTALLERS_IOS = [
+  "AppStore",
+  "TestFlight",
+  "com.apple.TestFlight",
+];
+
+const EXPECTED_BUNDLE_IDS = [
+  "com.knights.ludika.client",
+  "com.knights.ludika.driver",
+];
 
 /**
  * Handles location permissions and uses react-native-turbo-mock-location-detector
@@ -81,16 +99,20 @@ async function checkTurboMockLocation(): Promise<boolean> {
 export interface SecurityState {
   /** Device is jailbroken (iOS) or rooted (Android). */
   isJailBroken: boolean;
+  /** Hooking or reverse-engineering framework detected (Substrate, Xposed, Frida, etc.). */
+  hookDetected: boolean;
   /** Mock/fake GPS locations can be injected or active. */
   canMockLocation: boolean;
+  /** App package tampering or unofficial sideloading detected. */
+  isTampered: boolean;
+  /** Name of the package installer that installed the app. */
+  installerPackageName: string | null;
   /** Android Developer Options are enabled. */
   isDevelopmentSettingsMode: boolean;
   /** Running on a real physical device (false = simulator/emulator). */
   isRealDevice: boolean;
   /** App is being actively debugged. */
   isDebuggedMode: boolean;
-  /** JailMonkey trustFall heuristic passed. */
-  isTrustFallPassed: boolean;
   /** List of human-readable reasons why the device was flagged. */
   detectedReasons: string[];
   /**
@@ -113,11 +135,13 @@ export type SecurityStore = SecurityState & SecurityActions;
 
 const initialState: SecurityState = {
   isJailBroken: false,
+  hookDetected: false,
   canMockLocation: false,
+  isTampered: false,
+  installerPackageName: null,
   isDevelopmentSettingsMode: false,
   isRealDevice: true,
   isDebuggedMode: false,
-  isTrustFallPassed: true,
   detectedReasons: [],
   isCompromised: false,
   isEnforced: false,
@@ -139,6 +163,12 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
       const isJailBroken = JailMonkey.isJailBroken();
       console.log("isJailBroken", isJailBroken);
 
+      const hookDetected =
+        typeof JailMonkey.hookDetected === "function"
+          ? JailMonkey.hookDetected()
+          : false;
+      console.log("hookDetected", hookDetected);
+
       const jailMonkeyMocked = JailMonkey.canMockLocation();
       console.log("canMockLocation (JailMonkey):", jailMonkeyMocked);
 
@@ -153,17 +183,75 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
 
       const isDebuggedMode = await JailMonkey.isDebuggedMode();
 
-      const isTrustFallPassed = JailMonkey.trustFall();
+      let installerPackageName: string | null = null;
+      let isRealDevice = true;
+      let bundleId = "";
+
+      try {
+        if (Platform.OS !== "web") {
+          installerPackageName =
+            (await DeviceInfo.getInstallerPackageName()) || null;
+          const isEmulator = await DeviceInfo.isEmulator();
+          isRealDevice = !isEmulator;
+          bundleId = DeviceInfo.getBundleId();
+        }
+      } catch (err) {
+        console.warn("[Security] Failed to query DeviceInfo:", err);
+      }
+      console.log("installerPackageName:", installerPackageName);
+      console.log("isRealDevice:", isRealDevice);
+      console.log("bundleId:", bundleId);
 
       const reasons: string[] = [];
       if (isJailBroken) reasons.push("Device is jailbroken or rooted");
+      if (hookDetected)
+        reasons.push("Hooking or reverse-engineering framework detected");
       if (canMockLocation) reasons.push("Mock location is enabled");
       if (isDevelopmentSettingsMode)
         reasons.push("Developer options are active");
       if (isDebuggedMode) reasons.push("App is being debugged");
+      if (!isRealDevice) reasons.push("Running on an emulator/simulator");
 
-      console.log("isTrustFallPassed", isTrustFallPassed);
-      if (isTrustFallPassed) reasons.push("Trust fall heuristic check failed");
+      let isTampered = false;
+
+      // 1. Bundle ID / Package Name integrity check
+      // Repackaged or cloned apps usually alter the bundle identifier.
+      if (bundleId) {
+        const isRecognizedBundle =
+          __DEV__ ||
+          EXPECTED_BUNDLE_IDS.includes(bundleId) ||
+          bundleId.startsWith("com.knights.ludika");
+
+        if (!isRecognizedBundle) {
+          isTampered = true;
+          reasons.push(
+            `App package identifier modified or cloned (${bundleId})`,
+          );
+        }
+      }
+
+      const allowUnofficial = Boolean(
+        env.EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER === "true" ||
+        env.EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER === "1",
+      );
+
+      if (isEnforced && !allowUnofficial) {
+        const isTrustedInstaller =
+          Platform.OS === "android"
+            ? installerPackageName !== null &&
+              TRUSTED_INSTALLERS_ANDROID.includes(installerPackageName)
+            : Platform.OS === "ios"
+              ? installerPackageName !== null &&
+                TRUSTED_INSTALLERS_IOS.includes(installerPackageName)
+              : true;
+
+        if (!isTrustedInstaller) {
+          isTampered = true;
+          reasons.push(
+            `Untrusted app installer source: ${installerPackageName || "sideloaded / unknown"}`,
+          );
+        }
+      }
 
       const hasThreats = reasons.length > 0;
       const isCompromised = isEnforced && hasThreats;
@@ -182,11 +270,13 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
 
       set({
         isJailBroken,
+        hookDetected,
         canMockLocation,
+        isTampered,
+        installerPackageName,
         isDevelopmentSettingsMode,
-        // isRealDevice,
+        isRealDevice,
         isDebuggedMode,
-        isTrustFallPassed,
         detectedReasons: reasons,
         isEnforced,
         isCompromised,

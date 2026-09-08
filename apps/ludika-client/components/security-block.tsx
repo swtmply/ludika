@@ -1,8 +1,9 @@
 import { useSecurityStore } from "@ludika/store/security";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   BackHandler,
   Platform,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,9 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export function SecurityBlockScreen() {
   const {
     isJailBroken,
+    hookDetected,
     canMockLocation,
+    isTampered,
+    isRealDevice,
     isDevelopmentSettingsMode,
-    // isRealDevice,
     isDebuggedMode,
     detectedReasons,
   } = useSecurityStore();
@@ -23,7 +26,10 @@ export function SecurityBlockScreen() {
   // Intercept the Android hardware back button so the user cannot navigate away.
   useEffect(() => {
     if (Platform.OS !== "android") return;
-    const subscription = BackHandler.addEventListener("hardwareBackPress", () => true);
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
     return () => subscription.remove();
   }, []);
 
@@ -32,127 +38,173 @@ export function SecurityBlockScreen() {
       ? detectedReasons
       : [
           ...(isJailBroken ? ["Device is jailbroken or rooted"] : []),
+          ...(hookDetected ? ["Hooking framework detected"] : []),
+          ...(isTampered ? ["App tampering detected"] : []),
           ...(canMockLocation ? ["Mock location is enabled"] : []),
-          ...(isDevelopmentSettingsMode ? ["Developer options are active"] : []),
-          // ...(!isRealDevice ? ["Running on a simulator or emulator"] : []),
-          ...(isDebuggedMode ? ["App is being debugged"] : []),
+          ...(isDevelopmentSettingsMode ? ["Developer options active"] : []),
+          ...(isDebuggedMode ? ["Debugger connected"] : []),
+          ...(!isRealDevice ? ["Running on an emulator"] : []),
         ];
 
   return (
     <SafeAreaView style={styles.root}>
-      {/* Shield icon — pure SVG-free inline unicode approach, no extra dep */}
-      <Text style={styles.icon}>🛡️</Text>
+      <StatusBar barStyle="dark-content" backgroundColor="#F9F9FB" />
 
-      <Text style={styles.title}>Access Restricted</Text>
-
-      <Text style={styles.subtitle}>
-        This app cannot run on your device because a security check failed.
-      </Text>
-
-      {reasons.length > 0 && (
-        <View style={styles.reasonsCard}>
-          <Text style={styles.reasonsHeading}>Detected issues:</Text>
-          {reasons.map((reason) => (
-            <Text key={reason} style={styles.reasonItem}>
-              • {reason}
-            </Text>
-          ))}
+      {/* Main Friendly Empty-State Container */}
+      <View style={styles.content}>
+        {/* Soft Circular Visual Icon Container */}
+        <View style={styles.iconCircle}>
+          <Text style={styles.iconEmoji}>🔒</Text>
         </View>
-      )}
 
-      <Text style={styles.footer}>
-        {Platform.OS === "android"
-          ? "Please use an unmodified device to access this app."
-          : "Please contact support if you believe this is a mistake."}
-      </Text>
+        {/* Clear & Friendly Copy */}
+        <Text style={styles.title}>Unable to Open App</Text>
+        <Text style={styles.subtitle}>
+          To protect your personal account and payment details, we can't run
+          the app on this device environment.
+        </Text>
 
+        {/* Soft Pill List for Detected Issues */}
+        {reasons.length > 0 && (
+          <View style={styles.reasonsContainer}>
+            {reasons.map((reason) => (
+              <View key={reason} style={styles.reasonPill}>
+                <View style={styles.warningDot} />
+                <Text style={styles.reasonText}>{reason}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Informative Footer Support Note */}
+        <Text style={styles.footerNote}>
+          {Platform.OS === "android"
+            ? "Please restore your device to official firmware to continue."
+            : "Please contact support if you believe this detection is incorrect."}
+        </Text>
+      </View>
+
+      {/* Modern Fixed Bottom Action Area */}
       {Platform.OS === "android" && (
-        <TouchableOpacity
-          style={styles.exitButton}
-          onPress={() => BackHandler.exitApp()}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.exitButtonText}>Exit App</Text>
-        </TouchableOpacity>
+        <View style={styles.bottomBar}>
+          <TouchableOpacity
+            style={styles.exitButton}
+            onPress={() => BackHandler.exitApp()}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.exitButtonText}>Close App</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </SafeAreaView>
   );
 }
 
+// Delivery-Style Color Palette
+const COLORS = {
+  background: "#F9F9FB",
+  surface: "#FFFFFF",
+  textPrimary: "#1A1D1E",
+  textSecondary: "#6C727F",
+  warningDot: "#F59E0B",
+  border: "#EEF0F2",
+};
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#0a0a0f",
+    backgroundColor: COLORS.background,
+  },
+  content: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 28,
-    paddingVertical: 40,
+    paddingHorizontal: 32,
   },
-  icon: {
-    fontSize: 64,
+  iconCircle: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: COLORS.surface,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 24,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    // Soft drop shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.04,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  iconEmoji: {
+    fontSize: 36,
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: "700",
-    color: "#f1f1f1",
+    color: COLORS.textPrimary,
     textAlign: "center",
-    marginBottom: 12,
-    letterSpacing: 0.3,
+    marginBottom: 10,
+    letterSpacing: -0.3,
   },
   subtitle: {
     fontSize: 15,
-    color: "#9ca3af",
-    textAlign: "center",
     lineHeight: 22,
-    marginBottom: 28,
-  },
-  reasonsCard: {
-    backgroundColor: "#1a1a2e",
-    borderWidth: 1,
-    borderColor: "#ef4444",
-    borderRadius: 12,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    width: "100%",
-    marginBottom: 28,
-  },
-  reasonsHeading: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#ef4444",
-    marginBottom: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-  },
-  reasonItem: {
-    fontSize: 14,
-    color: "#d1d5db",
-    marginBottom: 6,
-    lineHeight: 20,
-  },
-  footer: {
-    fontSize: 13,
-    color: "#6b7280",
+    color: COLORS.textSecondary,
     textAlign: "center",
-    lineHeight: 19,
-    marginBottom: 32,
+    marginBottom: 28,
+  },
+  reasonsContainer: {
+    width: "100%",
+    gap: 8,
+    marginBottom: 24,
+  },
+  reasonPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.surface,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  warningDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: COLORS.warningDot,
+    marginRight: 12,
+  },
+  reasonText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: COLORS.textPrimary,
+    flex: 1,
+  },
+  footerNote: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.textSecondary,
+    textAlign: "center",
+  },
+  bottomBar: {
+    paddingHorizontal: 24,
+    paddingBottom: 16,
+    paddingTop: 12,
   },
   exitButton: {
-    backgroundColor: "#ef4444",
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    shadowColor: "#ef4444",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 6,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: COLORS.textPrimary,
+    alignItems: "center",
+    justifyContent: "center",
   },
   exitButtonText: {
-    color: "#ffffff",
+    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "700",
-    letterSpacing: 0.3,
+    fontWeight: "600",
   },
 });
