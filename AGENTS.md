@@ -57,7 +57,10 @@ Adding a dependency used by two or more workspaces? Put it in the root
 
 Skills live in `.claude/skills` (mirrored to `.agents/skills`). Those with
 `disable-model-invocation: true` only run when a human types `/<name>` - notably
-`/implement`, `/to-spec`, `/to-tickets`, `/triage`, `/ask-matt`.
+`/pr`, `/implement`, `/to-spec`, `/to-tickets`, `/triage`, `/ask-matt`.
+
+`/pr` writes the PR description (overview, what, why, how, risk) from the diff and the
+linked issue, then opens it. There is no PR template; the skill is the template.
 
 ### Issue tracker
 
