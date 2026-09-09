@@ -5,10 +5,7 @@ import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { Platform } from "react-native";
 
 import { authClient } from "@/lib/auth-client";
-import {
-  getVercelProtectionHeaders,
-  serverBaseURL,
-} from "@/lib/server-config";
+import { getVercelProtectionHeaders, serverBaseURL } from "@/lib/server-config";
 
 export const queryClient = new QueryClient();
 

@@ -1,10 +1,9 @@
 import "@/global.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { MobileUIProvider } from "@ludika/mobile-ui";
+import { AppThemeProvider, MobileUIProvider } from "@ludika/mobile-ui";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
-import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { queryClient } from "@/utils/trpc";
 
 export const unstable_settings = {

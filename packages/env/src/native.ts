@@ -9,8 +9,7 @@ export const env = createEnv({
   },
   runtimeEnv: {
     EXPO_PUBLIC_SERVER_URL: process.env.EXPO_PUBLIC_SERVER_URL,
-    EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS:
-      process.env.EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS,
+    EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS: process.env.EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS,
   },
   emptyStringAsUndefined: true,
 });

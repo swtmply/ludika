@@ -11,82 +11,65 @@ import { useRef } from "react";
 import { Text, TextInput, View } from "react-native";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
-import { queryClient } from "@/utils/trpc";
+import { type AuthSubmitResult, type SignUpValues } from "../lib/auth-form";
+import { getErrorMessage } from "../lib/form-errors";
 
-const signInSchema = z.object({
+const signUpSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
   email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
   password: z.string().min(1, "Password is required").min(8, "Use at least 8 characters"),
 });
 
-function getErrorMessage(error: unknown): string | null {
-  if (!error) return null;
+export type SignUpProps = {
+  /** Creates the account. Return `{ error }` or throw to surface a failure. */
+  onSubmit: (values: SignUpValues) => Promise<AuthSubmitResult>;
+  /** Runs after a successful sign-up, e.g. to refetch queries. */
+  onSuccess?: () => void;
+  title?: string;
+};
 
-  if (typeof error === "string") {
-    return error;
-  }
-
-  if (Array.isArray(error)) {
-    for (const issue of error) {
-      const message = getErrorMessage(issue);
-      if (message) {
-        return message;
-      }
-    }
-    return null;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const maybeError = error as { message?: unknown };
-    if (typeof maybeError.message === "string") {
-      return maybeError.message;
-    }
-  }
-
-  return null;
-}
-
-function SignIn() {
+export function SignUp({ onSubmit, onSuccess, title = "Create Account" }: SignUpProps) {
+  const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const { toast } = useToast();
 
   const form = useForm({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
     validators: {
-      onSubmit: signInSchema,
+      onSubmit: signUpSchema,
     },
     onSubmit: async ({ value, formApi }) => {
-      await authClient.signIn.email(
-        {
+      try {
+        const result = await onSubmit({
+          name: value.name.trim(),
           email: value.email.trim(),
           password: value.password,
-        },
-        {
-          onError(error) {
-            toast.show({
-              variant: "danger",
-              label: error.error?.message || "Failed to sign in",
-            });
-          },
-          onSuccess() {
-            formApi.reset();
-            toast.show({
-              variant: "success",
-              label: "Signed in successfully",
-            });
-            queryClient.refetchQueries();
-          },
-        },
-      );
+        });
+
+        if (result?.error) {
+          toast.show({ variant: "danger", label: result.error });
+          return;
+        }
+
+        formApi.reset();
+        toast.show({ variant: "success", label: "Account created successfully" });
+        onSuccess?.();
+      } catch (error) {
+        toast.show({
+          variant: "danger",
+          label: getErrorMessage(error) ?? "Failed to sign up",
+        });
+      }
     },
   });
 
   return (
     <Surface variant="secondary" className="p-4 rounded-lg">
-      <Text className="text-foreground font-medium mb-4">Sign In</Text>
+      <Text className="text-foreground font-medium mb-4">{title}</Text>
 
       <form.Subscribe
         selector={(state) => ({
@@ -104,11 +87,33 @@ function SignIn() {
               </FieldError>
 
               <View className="gap-3">
+                <form.Field name="name">
+                  {(field) => (
+                    <TextField>
+                      <Label>Name</Label>
+                      <Input
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChangeText={field.handleChange}
+                        placeholder="John Doe"
+                        autoComplete="name"
+                        textContentType="name"
+                        returnKeyType="next"
+                        blurOnSubmit={false}
+                        onSubmitEditing={() => {
+                          emailInputRef.current?.focus();
+                        }}
+                      />
+                    </TextField>
+                  )}
+                </form.Field>
+
                 <form.Field name="email">
                   {(field) => (
                     <TextField>
                       <Label>Email</Label>
                       <Input
+                        ref={emailInputRef}
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChangeText={field.handleChange}
@@ -138,8 +143,8 @@ function SignIn() {
                         onChangeText={field.handleChange}
                         placeholder="••••••••"
                         secureTextEntry
-                        autoComplete="password"
-                        textContentType="password"
+                        autoComplete="new-password"
+                        textContentType="newPassword"
                         returnKeyType="go"
                         onSubmitEditing={form.handleSubmit}
                       />
@@ -151,7 +156,7 @@ function SignIn() {
                   {isSubmitting ? (
                     <Spinner size="sm" color="default" />
                   ) : (
-                    <Button.Label>Sign In</Button.Label>
+                    <Button.Label>Create Account</Button.Label>
                   )}
                 </Button>
               </View>
@@ -162,5 +167,3 @@ function SignIn() {
     </Surface>
   );
 }
-
-export { SignIn };

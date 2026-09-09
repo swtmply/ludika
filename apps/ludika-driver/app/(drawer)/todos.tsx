@@ -12,7 +12,7 @@ import { useThemeColor } from "heroui-native/hooks";
 import { useState } from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
 
-import { Container } from "@/components/container";
+import { Container } from "@ludika/mobile-ui";
 import { trpc } from "@/utils/trpc";
 
 export default function TodosScreen() {

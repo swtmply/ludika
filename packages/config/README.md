@@ -13,7 +13,6 @@ There is no runtime source, build script, or public JavaScript entry point here.
 
 This package currently has no dependencies. If it needs one, run `bun add <package>` or `bun remove <package>` from this workspace:
 
-
     bun add <package>
     bun remove <package>
 

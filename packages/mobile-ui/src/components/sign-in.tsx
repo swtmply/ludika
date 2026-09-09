@@ -11,42 +11,23 @@ import { useRef } from "react";
 import { Text, TextInput, View } from "react-native";
 import z from "zod";
 
-import { authClient } from "@/lib/auth-client";
-import { queryClient } from "@/utils/trpc";
+import { type AuthSubmitResult, type SignInValues } from "../lib/auth-form";
+import { getErrorMessage } from "../lib/form-errors";
 
 const signInSchema = z.object({
   email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
   password: z.string().min(1, "Password is required").min(8, "Use at least 8 characters"),
 });
 
-function getErrorMessage(error: unknown): string | null {
-  if (!error) return null;
+export type SignInProps = {
+  /** Performs the sign-in. Return `{ error }` or throw to surface a failure. */
+  onSubmit: (values: SignInValues) => Promise<AuthSubmitResult>;
+  /** Runs after a successful sign-in, e.g. to refetch queries. */
+  onSuccess?: () => void;
+  title?: string;
+};
 
-  if (typeof error === "string") {
-    return error;
-  }
-
-  if (Array.isArray(error)) {
-    for (const issue of error) {
-      const message = getErrorMessage(issue);
-      if (message) {
-        return message;
-      }
-    }
-    return null;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const maybeError = error as { message?: unknown };
-    if (typeof maybeError.message === "string") {
-      return maybeError.message;
-    }
-  }
-
-  return null;
-}
-
-function SignIn() {
+export function SignIn({ onSubmit, onSuccess, title = "Sign In" }: SignInProps) {
   const passwordInputRef = useRef<TextInput>(null);
   const { toast } = useToast();
 
@@ -59,34 +40,32 @@ function SignIn() {
       onSubmit: signInSchema,
     },
     onSubmit: async ({ value, formApi }) => {
-      await authClient.signIn.email(
-        {
+      try {
+        const result = await onSubmit({
           email: value.email.trim(),
           password: value.password,
-        },
-        {
-          onError(error) {
-            toast.show({
-              variant: "danger",
-              label: error.error?.message || "Failed to sign in",
-            });
-          },
-          onSuccess() {
-            formApi.reset();
-            toast.show({
-              variant: "success",
-              label: "Signed in successfully",
-            });
-            queryClient.refetchQueries();
-          },
-        },
-      );
+        });
+
+        if (result?.error) {
+          toast.show({ variant: "danger", label: result.error });
+          return;
+        }
+
+        formApi.reset();
+        toast.show({ variant: "success", label: "Signed in successfully" });
+        onSuccess?.();
+      } catch (error) {
+        toast.show({
+          variant: "danger",
+          label: getErrorMessage(error) ?? "Failed to sign in",
+        });
+      }
     },
   });
 
   return (
     <Surface variant="secondary" className="p-4 rounded-lg">
-      <Text className="text-foreground font-medium mb-4">Sign In</Text>
+      <Text className="text-foreground font-medium mb-4">{title}</Text>
 
       <form.Subscribe
         selector={(state) => ({
@@ -162,5 +141,3 @@ function SignIn() {
     </Surface>
   );
 }
-
-export { SignIn };

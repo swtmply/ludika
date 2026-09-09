@@ -1,7 +1,7 @@
 import { Card } from "heroui-native/card";
 import { View } from "react-native";
 
-import { Container } from "@/components/container";
+import { Container } from "@ludika/mobile-ui";
 
 export default function Home() {
   return (

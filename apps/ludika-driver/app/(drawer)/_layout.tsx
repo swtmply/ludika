@@ -11,7 +11,7 @@ import { useThemeColor } from "heroui-native/hooks";
 import React, { useCallback } from "react";
 import { Pressable, Text } from "react-native";
 
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@ludika/mobile-ui";
 
 function DrawerLayout() {
   const themeColorForeground = useThemeColor("foreground");

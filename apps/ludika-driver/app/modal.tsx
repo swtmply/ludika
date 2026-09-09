@@ -6,7 +6,7 @@ import { Surface } from "heroui-native/surface";
 import { useThemeColor } from "heroui-native/hooks";
 import { Text, View } from "react-native";
 
-import { Container } from "@/components/container";
+import { Container } from "@ludika/mobile-ui";
 
 function Modal() {
   const accentForegroundColor = useThemeColor("accent-foreground");

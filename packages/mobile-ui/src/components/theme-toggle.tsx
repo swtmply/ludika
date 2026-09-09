@@ -1,11 +1,11 @@
 import { Moon01Icon, Sun01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import * as Haptics from "expo-haptics";
+import { useThemeColor } from "heroui-native/hooks";
 import { Platform, Pressable } from "react-native";
 import Animated, { FadeOut, ZoomIn } from "react-native-reanimated";
 
-import { useAppTheme } from "@/contexts/app-theme-context";
-import { useThemeColor } from "heroui-native/hooks";
+import { useAppTheme } from "../theme/app-theme-context";
 
 export function ThemeToggle() {
   const { toggleTheme, isLight } = useAppTheme();

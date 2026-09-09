@@ -19,9 +19,9 @@
   "dependencies": {
     "@better-auth/expo": "catalog:",
     "@expo/metro-runtime": "~57.0.12",
+    "@gorhom/bottom-sheet": "^5.2.14",
     "@hugeicons/core-free-icons": "catalog:",
     "@hugeicons/react-native": "catalog:",
-    "@gorhom/bottom-sheet": "^5.2.14",
     "@ludika/api": "workspace:*",
     "@ludika/env": "workspace:*",
     "@ludika/mobile-ui": "workspace:*",

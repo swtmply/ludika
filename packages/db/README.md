@@ -17,7 +17,6 @@ The package exports its root entry and wildcard entries, so API code can import 
 
 ## Dependencies and commands
 
-
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
     bun add <package>
