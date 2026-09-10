@@ -70,4 +70,5 @@ Next.js / web. shadcn + Base UI + Tailwind v4. Used by apps/web.
 Not shared API. Anything here that a second app would want belongs in a
 package instead - see the promotion rule in `AGENTS.md`.
 
+- `apps/ludika-client/components/`: `order-draft-context.tsx`, `order-step.tsx`
 - `apps/web/src/components/`: `header.tsx`, `loader.tsx`, `mode-toggle.tsx`, `providers.tsx`, `sign-in-form.tsx`, `sign-up-form.tsx`, `theme-provider.tsx`, `user-menu.tsx`

@@ -9,10 +9,11 @@ components with two names doing one job, and no search finds the second one.
 
 ## Status
 
-The structural vocabulary below is settled and taken from the code. The **domain
-vocabulary is not yet written** - see the placeholder section, which is the next
-thing to fill in. Until it exists, agents and humans will invent their own names for
-Ludika's domain concepts, and those names will not match each other.
+The structural vocabulary below is settled and taken from the code, and the domain
+vocabulary is written. Two things are still open: an Order's states and its
+relationship to a Driver, and whether Client, Driver and Admin are roles on a User or
+entities of their own. Both are flagged where they belong below. Decide them there
+first - a name invented in code is a name no search finds twice.
 
 ## Structural terms
 
@@ -63,8 +64,8 @@ concept. Delete it once real entities land, and remove it from this file.
 
 ## Domain terms
 
-Ludika is a **delivery marketplace**. A Client books the delivery of items, a Driver
-accepts that booking and carries it out, and an Admin oversees both from the web
+Ludika is a **delivery marketplace**. A Client orders the delivery of Items, a Driver
+accepts that Order and carries it out, and an Admin oversees both from the web
 dashboard.
 
 > **"Ludika" is a working name, not the final product name.** It is already baked
@@ -72,12 +73,12 @@ dashboard.
 > (`com.knights.ludika.client` / `.driver`). Renaming later means touching all three
 > plus the store listings.
 
-**Client** - the party who books a delivery. Uses the client app.
+**Client** - the party who places an Order for a delivery. Uses the client app.
 
-**Driver** - the party who accepts a booking and performs the delivery. Uses the
+**Driver** - the party who accepts an Order and performs the delivery. Uses the
 driver app.
 
-**Admin** - the party who oversees Clients, Drivers and bookings. Uses the web app.
+**Admin** - the party who oversees Clients, Drivers and Orders. Uses the web app.
 No self-service admin signup is implied by this term.
 
 A person acts as exactly **one** party. One human being both a Client and a Driver is
@@ -87,13 +88,24 @@ that makes it structurally impossible.
 Whether these three are roles on a User or entities of their own is **not decided**.
 Until it is, no schema should assume either.
 
-**Booking** - what a Client creates to request a delivery, and the thing a Driver
-accepts. One Booking covers **exactly one pickup and one drop-off**, however many
-items it carries. Multi-stop and split-across-drivers deliveries are out of scope;
-if they arrive later they are a new term, not a wider Booking.
+**Order** - what a Client creates to request a delivery, and the thing a Driver
+accepts. One Order covers **exactly one pickup and one drop-off**, however many
+Items it carries. Multi-stop and split-across-drivers deliveries are out of scope;
+if they arrive later they are a new term, not a wider Order.
 
-Use "Booking" as both the noun and the act ("the Client books"). Not Order, Job,
+Use "Order" as both the noun and the act ("the Client orders"). Not Booking, Job,
 Trip or Request.
 
-Booking's states and its relationship to a Driver are not modelled yet. Add them here
+Order's states and its relationship to a Driver are not modelled yet. Add them here
 when they are decided, rather than naming them in code first.
+
+**Pin** - a point on the map chosen as an Order's pickup or drop-off. An Order has
+exactly two: one pickup Pin and one drop-off Pin. A Pin is where the delivery happens,
+not the address text a Client types to find it.
+
+**Item** - one thing carried under an Order. An Order carries one or more Items, and
+they are never split across Drivers.
+
+**Live feed** - the Client's view of an in-progress Order once it is placed: the
+Driver's position and the Order's status as it changes. Read-only; it collects no
+input and is not a step in placing the Order.
