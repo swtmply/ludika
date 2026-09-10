@@ -16,7 +16,6 @@ The web app imports paths such as `@ludika/ui/components/button`, `@ludika/ui/li
 
 ## Dependencies and commands
 
-
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
     bun add <package>

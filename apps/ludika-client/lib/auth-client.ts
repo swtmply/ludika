@@ -3,10 +3,7 @@ import { createAuthClient } from "better-auth/react";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 
-import {
-  authBaseURL,
-  getVercelProtectionHeaders,
-} from "@/lib/server-config";
+import { authBaseURL, getVercelProtectionHeaders } from "@/lib/server-config";
 
 export const authClient = createAuthClient({
   baseURL: authBaseURL,

@@ -1,10 +1,7 @@
 "use client";
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
-import {
-  ArrowRight01Icon,
-  Tick02Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@ludika/ui/lib/utils";
 import * as React from "react";
@@ -119,11 +116,7 @@ function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <HugeiconsIcon
-        icon={ArrowRight01Icon}
-        strokeWidth={2}
-        className="cn-rtl-flip ml-auto"
-      />
+      <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="cn-rtl-flip ml-auto" />
     </MenuPrimitive.SubmenuTrigger>
   );
 }

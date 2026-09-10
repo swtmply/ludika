@@ -13,3 +13,16 @@ export function MobileUIProvider({ children, ...providerProps }: MobileUIProvide
     </GestureHandlerRootView>
   );
 }
+
+// Shared mobile components. Add one line per component; keep it alphabetical.
+export { Container } from "./components/container";
+export { SignIn, type SignInProps } from "./components/sign-in";
+export { SignUp, type SignUpProps } from "./components/sign-up";
+export { ThemeToggle } from "./components/theme-toggle";
+
+// Theme
+export { AppThemeProvider, useAppTheme } from "./theme/app-theme-context";
+
+// Helpers shared by the components above
+export type { AuthSubmitResult, SignInValues, SignUpValues } from "./lib/auth-form";
+export { getErrorMessage } from "./lib/form-errors";

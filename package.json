@@ -42,7 +42,16 @@
     "build:eas:dev": "turbo run build:dev --filter=ludika-client --filter=ludika-driver",
     "build:eas:preview": "turbo run build:preview --filter=ludika-client --filter=ludika-driver",
     "clean": "git clean -Xdf -e \"!.env*\"",
-    "clean:dry": "git clean -Xdn -e \"!.env*\""
+    "clean:dry": "git clean -Xdn -e \"!.env*\"",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "check-types": "turbo run check-types",
+    "boundaries": "turbo boundaries",
+    "check": "bun run format:check && bun run lint && bun run check-types && bun run boundaries",
+    "dupes": "bun run scripts/find-duplicates.ts",
+    "inventory": "bun run scripts/generate-inventory.ts"
   },
   "dependencies": {
     "@ludika/env": "workspace:*",
@@ -60,5 +69,5 @@
     "typescript": "^6.0.3",
     "vercel": "^59.9.1"
   },
-  "packageManager": "bun@1.3.14"
+  "packageManager": "bun@1.4.2"
 }

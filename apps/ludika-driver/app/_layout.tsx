@@ -1,20 +1,34 @@
 import "@/global.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { MobileUIProvider } from "@ludika/mobile-ui";
+import { useThemeColor } from "heroui-native/hooks";
+import { useCallback } from "react";
+import { AppThemeProvider, MobileUIProvider, ThemeToggle } from "@ludika/mobile-ui";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
-import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { queryClient } from "@/utils/trpc";
 
 export const unstable_settings = {
-  initialRouteName: "(drawer)",
+  initialRouteName: "index",
 };
 
 function StackLayout() {
+  const themeColorForeground = useThemeColor("foreground");
+  const themeColorBackground = useThemeColor("background");
+
+  const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
+
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+    <Stack
+      screenOptions={{
+        headerTintColor: themeColorForeground,
+        headerStyle: { backgroundColor: themeColorBackground },
+        headerTitleStyle: { fontWeight: "600", color: themeColorForeground },
+      }}
+    >
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="home" options={{ title: "Driver", headerRight: renderThemeToggle }} />
       <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
     </Stack>
   );

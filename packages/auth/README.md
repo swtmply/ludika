@@ -14,7 +14,6 @@ The server imports `@ludika/auth`. App auth clients live in each app and use the
 
 ## Dependencies and commands
 
-
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
     bun add <package>
