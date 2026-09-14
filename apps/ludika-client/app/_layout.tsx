@@ -50,7 +50,14 @@ export default function Layout() {
   // Hold the splash until the check resolves.
   if (!isChecked) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#0a0a0f" }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0f",
+        }}
+      >
         <ActivityIndicator size="large" color="#6366f1" />
       </View>
     );

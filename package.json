@@ -1,5 +1,6 @@
 {
   "name": "ludika",
+  "version": "1.0.0",
   "private": true,
   "workspaces": {
     "packages": [
@@ -57,10 +58,10 @@
   "dependencies": {
     "@ludika/env": "workspace:*",
     "dotenv": "catalog:",
-    "zod": "catalog:",
     "expo": "~57.0.18",
     "react": "19.2.3",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@ludika/config": "workspace:*",
@@ -73,6 +74,5 @@
     "typescript": "^6.0.3",
     "vercel": "^59.9.1"
   },
-  "packageManager": "bun@1.3.14",
-  "version": "1.0.0"
+  "packageManager": "bun@1.3.14"
 }

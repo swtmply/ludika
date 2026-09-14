@@ -26,10 +26,7 @@ export function SecurityBlockScreen() {
   // Intercept the Android hardware back button so the user cannot navigate away.
   useEffect(() => {
     if (Platform.OS !== "android") return;
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => true
-    );
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => true);
     return () => subscription.remove();
   }, []);
 
@@ -60,8 +57,8 @@ export function SecurityBlockScreen() {
         {/* Clear & Friendly Copy */}
         <Text style={styles.title}>Unable to Open App</Text>
         <Text style={styles.subtitle}>
-          To protect your personal account and payment details, we can't run
-          the app on this device environment.
+          To protect your personal account and payment details, we can't run the app on this device
+          environment.
         </Text>
 
         {/* Soft Pill List for Detected Issues */}

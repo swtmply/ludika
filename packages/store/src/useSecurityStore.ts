@@ -15,16 +15,9 @@ const TRUSTED_INSTALLERS_ANDROID = [
   "com.sec.android.app.samsungapps", // Samsung Galaxy Store
 ];
 
-const TRUSTED_INSTALLERS_IOS = [
-  "AppStore",
-  "TestFlight",
-  "com.apple.TestFlight",
-];
+const TRUSTED_INSTALLERS_IOS = ["AppStore", "TestFlight", "com.apple.TestFlight"];
 
-const EXPECTED_BUNDLE_IDS = [
-  "com.knights.ludika.client",
-  "com.knights.ludika.driver",
-];
+const EXPECTED_BUNDLE_IDS = ["com.knights.ludika.client", "com.knights.ludika.driver"];
 
 /**
  * Handles location permissions and uses react-native-turbo-mock-location-detector
@@ -42,8 +35,7 @@ async function checkTurboMockLocation(): Promise<boolean> {
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
             title: "Location Permission",
-            message:
-              "Location permission is needed to verify device integrity.",
+            message: "Location permission is needed to verify device integrity.",
             buttonPositive: "OK",
           },
         );
@@ -51,9 +43,7 @@ async function checkTurboMockLocation(): Promise<boolean> {
       }
 
       if (!hasPermission) {
-        console.warn(
-          "[Security] Location permission not granted, cannot verify mock location",
-        );
+        console.warn("[Security] Location permission not granted, cannot verify mock location");
         return false;
       }
     }
@@ -66,25 +56,16 @@ async function checkTurboMockLocation(): Promise<boolean> {
 
     switch (err?.code) {
       case MockLocationDetectorErrorCode.GPSNotEnabled:
-        console.warn(
-          "[Security] TurboMockLocation: GPS is not enabled on device",
-        );
+        console.warn("[Security] TurboMockLocation: GPS is not enabled on device");
         break;
       case MockLocationDetectorErrorCode.NoLocationPermissionEnabled:
-        console.warn(
-          "[Security] TurboMockLocation: No location permission enabled",
-        );
+        console.warn("[Security] TurboMockLocation: No location permission enabled");
         break;
       case MockLocationDetectorErrorCode.CantDetermine:
-        console.warn(
-          "[Security] TurboMockLocation: Cannot determine mock location status",
-        );
+        console.warn("[Security] TurboMockLocation: Cannot determine mock location status");
         break;
       default:
-        console.warn(
-          "[Security] TurboMockLocation error:",
-          err?.message || error,
-        );
+        console.warn("[Security] TurboMockLocation error:", err?.message || error);
         break;
     }
 
@@ -164,9 +145,7 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
       console.log("isJailBroken", isJailBroken);
 
       const hookDetected =
-        typeof JailMonkey.hookDetected === "function"
-          ? JailMonkey.hookDetected()
-          : false;
+        typeof JailMonkey.hookDetected === "function" ? JailMonkey.hookDetected() : false;
       console.log("hookDetected", hookDetected);
 
       const jailMonkeyMocked = JailMonkey.canMockLocation();
@@ -178,8 +157,7 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
       const canMockLocation = jailMonkeyMocked || isTurboMocked;
       console.log("canMockLocation (Combined):", canMockLocation);
 
-      const isDevelopmentSettingsMode =
-        await JailMonkey.isDevelopmentSettingsMode();
+      const isDevelopmentSettingsMode = await JailMonkey.isDevelopmentSettingsMode();
 
       const isDebuggedMode = await JailMonkey.isDebuggedMode();
 
@@ -189,8 +167,7 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
 
       try {
         if (Platform.OS !== "web") {
-          installerPackageName =
-            (await DeviceInfo.getInstallerPackageName()) || null;
+          installerPackageName = (await DeviceInfo.getInstallerPackageName()) || null;
           const isEmulator = await DeviceInfo.isEmulator();
           isRealDevice = !isEmulator;
           bundleId = DeviceInfo.getBundleId();
@@ -204,11 +181,9 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
 
       const reasons: string[] = [];
       if (isJailBroken) reasons.push("Device is jailbroken or rooted");
-      if (hookDetected)
-        reasons.push("Hooking or reverse-engineering framework detected");
+      if (hookDetected) reasons.push("Hooking or reverse-engineering framework detected");
       if (canMockLocation) reasons.push("Mock location is enabled");
-      if (isDevelopmentSettingsMode)
-        reasons.push("Developer options are active");
+      if (isDevelopmentSettingsMode) reasons.push("Developer options are active");
       if (isDebuggedMode) reasons.push("App is being debugged");
       if (!isRealDevice) reasons.push("Running on an emulator/simulator");
 
@@ -224,9 +199,7 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
 
         if (!isRecognizedBundle) {
           isTampered = true;
-          reasons.push(
-            `App package identifier modified or cloned (${bundleId})`,
-          );
+          reasons.push(`App package identifier modified or cloned (${bundleId})`);
         }
       }
 
@@ -262,10 +235,7 @@ export const useSecurityStore = create<SecurityStore>((set) => ({
           reasons,
         );
       } else if (isCompromised) {
-        console.warn(
-          "[Security] 🚨 Device compromised — access restricted:",
-          reasons,
-        );
+        console.warn("[Security] 🚨 Device compromised — access restricted:", reasons);
       }
 
       set({
