@@ -277,6 +277,7 @@
       "devDependencies": {
         "@ludika/config": "workspace:*",
         "@types/bun": "catalog:",
+        "@types/node": "catalog:",
         "tsdown": "^0.22.14",
         "typescript": "^6.0.3",
       },
