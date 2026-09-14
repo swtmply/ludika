@@ -6,11 +6,19 @@ export const env = createEnv({
   client: {
     EXPO_PUBLIC_SERVER_URL: z.url(),
     EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS: z.string().min(1).optional(),
+
+    // Security checks master toggle
+    EXPO_PUBLIC_ENABLE_SECURITY_CHECKS: z.string().optional(),
+    EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER: z.string().optional(),
   },
   runtimeEnv: {
     EXPO_PUBLIC_SERVER_URL: process.env.EXPO_PUBLIC_SERVER_URL,
     EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS:
       process.env.EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS,
+    EXPO_PUBLIC_ENABLE_SECURITY_CHECKS:
+      process.env.EXPO_PUBLIC_ENABLE_SECURITY_CHECKS,
+    EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER:
+      process.env.EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER,
   },
   emptyStringAsUndefined: true,
 });
