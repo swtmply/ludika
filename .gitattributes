@@ -1,0 +1,21 @@
+# Normalise line endings. Without this, Windows and macOS devs produce diffs that
+# touch every line of a file nobody meaningfully changed, and formatter checks
+# disagree between machines.
+* text=auto eol=lf
+
+# Bun's lockfile is text but never worth reading in a diff.
+bun.lock -diff linguist-generated
+
+# Generated: do not hand-edit, do not review line by line.
+docs/inventory.md linguist-generated
+
+# Binary assets.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

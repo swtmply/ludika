@@ -1,0 +1,71 @@
+name: Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - preview
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Format, lint, types, boundaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - name: Cache turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Formatting
+        run: bun run format:check
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Types
+        run: bun run check-types
+
+      - name: Workspace boundaries
+        run: bun run boundaries
+
+      - name: Shared code inventory is current
+        run: bun run inventory --check
+
+      # Report only. Duplication across workspaces is sometimes deliberate, so this
+      # informs review instead of blocking the merge. Run `bun run dupes --strict`
+      # locally to make it fail.
+      - name: Cross-workspace duplication
+        if: always()
+        run: |
+          bun run dupes | tee dupes.txt
+          {
+            echo '## Cross-workspace duplication'
+            echo ''
+            echo '```'
+            cat dupes.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

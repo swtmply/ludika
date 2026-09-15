@@ -2,26 +2,47 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalDependencies": ["vercel.json", ".vercelignore"],
+  "boundaries": {
+    "tags": {
+      "role-app": {
+        "dependencies": {
+          "deny": ["role-app", "role-server"]
+        }
+      },
+      "role-ui": {
+        "dependencies": {
+          "deny": ["role-app", "role-server"]
+        }
+      },
+      "role-shared": {
+        "dependencies": {
+          "deny": ["role-app", "role-server", "role-ui"]
+        }
+      },
+      "platform-mobile": {
+        "dependencies": {
+          "deny": ["platform-web"]
+        }
+      },
+      "platform-web": {
+        "dependencies": {
+          "deny": ["platform-mobile"]
+        }
+      }
+    }
+  },
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": [
-        "DATABASE_URL",
-        "BETTER_AUTH_SECRET",
-        "NEXT_PUBLIC_SERVER_URL",
-        "DATABASE_URL_DIRECT"
-      ]
+      "env": ["DATABASE_URL", "BETTER_AUTH_SECRET", "NEXT_PUBLIC_SERVER_URL", "DATABASE_URL_DIRECT"]
     },
     "build:dev": {
       "cache": false
     },
     "build:preview": {
       "cache": false
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]

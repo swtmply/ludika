@@ -3,7 +3,7 @@ import { Button } from "heroui-native/button";
 import { Surface } from "heroui-native/surface";
 import { Text, View } from "react-native";
 
-import { Container } from "@/components/container";
+import { Container } from "@ludika/mobile-ui";
 
 export default function NotFoundScreen() {
   return (

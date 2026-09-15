@@ -13,7 +13,6 @@ When adding or renaming a variable, update the schema and `runtimeEnv` mapping i
 
 ## Dependencies and commands
 
-
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
     bun add <package>

@@ -16,7 +16,6 @@ The package depends on `@ludika/auth`, `@ludika/db`, and `@ludika/env`. Keep dat
 
 ## Dependencies and commands
 
-
 For ordinary single-workspace dependencies, run `bun add <package>` or `bun remove <package>` from this workspace:
 
     bun add <package>

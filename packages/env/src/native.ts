@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
@@ -13,12 +14,9 @@ export const env = createEnv({
   },
   runtimeEnv: {
     EXPO_PUBLIC_SERVER_URL: process.env.EXPO_PUBLIC_SERVER_URL,
-    EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS:
-      process.env.EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS,
-    EXPO_PUBLIC_ENABLE_SECURITY_CHECKS:
-      process.env.EXPO_PUBLIC_ENABLE_SECURITY_CHECKS,
-    EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER:
-      process.env.EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER,
+    EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS: process.env.EXPO_PUBLIC_VERCEL_PROTECTION_BYPASS,
+    EXPO_PUBLIC_ENABLE_SECURITY_CHECKS: process.env.EXPO_PUBLIC_ENABLE_SECURITY_CHECKS,
+    EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER: process.env.EXPO_PUBLIC_ALLOW_UNOFFICIAL_INSTALLER,
   },
   emptyStringAsUndefined: true,
 });

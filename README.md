@@ -11,25 +11,25 @@ git clone <repository-url>
 cd ludika
 ```
 
-Install Bun 1.3.14 before installing project dependencies.
+Install Bun 1.4.2 before installing project dependencies.
 
 Windows PowerShell:
 
 ```powershell
-iex "& {$(irm https://bun.com/install.ps1)} -Version 1.3.14"
+iex "& {$(irm https://bun.com/install.ps1)} -Version 1.4.2"
 ```
 
 macOS or Linux:
 
 ```bash
-curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
+curl -fsSL https://bun.com/install | bash -s "bun-v1.4.2"
 ```
 
 Open a new terminal if your shell does not find Bun, then check the version:
 
 ```bash
 bun --version
-# 1.3.14
+# 1.4.2
 ```
 
 Install all workspace dependencies from the repository root:
