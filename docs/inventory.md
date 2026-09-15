@@ -16,6 +16,7 @@ Import from the package root. Subpath imports also work: `@ludika/mobile-ui/comp
 | Exports | File | Import from |
 | --- | --- | --- |
 | `Container` | `container.tsx` | `@ludika/mobile-ui` |
+| `SecurityBlockScreen` | `security-block.tsx` | `@ludika/mobile-ui` |
 | `SignIn`, `SignInProps` | `sign-in.tsx` | `@ludika/mobile-ui` |
 | `SignUp`, `SignUpProps` | `sign-up.tsx` | `@ludika/mobile-ui` |
 | `ThemeToggle` | `theme-toggle.tsx` | `@ludika/mobile-ui` |
