@@ -289,6 +289,7 @@
         "@hugeicons/core-free-icons": "catalog:",
         "@hugeicons/react-native": "catalog:",
         "@ludika/config": "workspace:*",
+        "@ludika/store": "workspace:*",
         "@tanstack/react-form": "catalog:",
         "@types/react": "~19.2.18",
         "expo-haptics": "~57.0.1",
@@ -305,6 +306,7 @@
       "peerDependencies": {
         "@hugeicons/core-free-icons": "*",
         "@hugeicons/react-native": "*",
+        "@ludika/store": "*",
         "@tanstack/react-form": "^1.33.2",
         "expo-haptics": "*",
         "heroui-native": "^1.0.8",
