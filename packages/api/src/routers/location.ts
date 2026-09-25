@@ -86,9 +86,7 @@ export const locationRouter = router({
       url.searchParams.set("lat", String(METRO_MANILA_LAT));
       url.searchParams.set("lon", String(METRO_MANILA_LON));
 
-      console.log(
-        `${TAG} search → query="${input.query}" url=${url.toString()}`,
-      );
+      console.log(`${TAG} search → query="${input.query}" url=${url.toString()}`);
 
       let res: Response;
       try {
@@ -97,8 +95,7 @@ export const locationRouter = router({
         console.error(`${TAG} fetch threw:`, err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message:
-            "Failed to reach the geocoding service. Check your connection.",
+          message: "Failed to reach the geocoding service. Check your connection.",
         });
       }
 
@@ -121,12 +118,7 @@ export const locationRouter = router({
         const props = feature.properties;
         return {
           id: `photon-${props.osm_type ?? "n"}-${props.osm_id ?? index}`,
-          name:
-            props.name ??
-            props.street ??
-            props.district ??
-            props.city ??
-            "Unknown",
+          name: props.name ?? props.street ?? props.district ?? props.city ?? "Unknown",
           address: buildAddress(props),
           category: buildCategory(props),
           latitude: lat,

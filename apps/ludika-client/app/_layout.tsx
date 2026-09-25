@@ -4,11 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import { useCallback } from "react";
-import {
-  AppThemeProvider,
-  MobileUIProvider,
-  ThemeToggle,
-} from "@ludika/mobile-ui";
+import { AppThemeProvider, MobileUIProvider, ThemeToggle } from "@ludika/mobile-ui";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useEffect } from "react";
 import { View } from "react-native";
@@ -38,10 +34,7 @@ function StackLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(forms)/order" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="account"
-        options={{ title: "Account", headerRight: renderThemeToggle }}
-      />
+      <Stack.Screen name="account" options={{ title: "Account", headerRight: renderThemeToggle }} />
       <Stack.Screen
         name="location-search"
         options={{

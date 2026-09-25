@@ -1,8 +1,4 @@
-import {
-  ArrowRight01Icon,
-  Location01Icon,
-  PinLocation01Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, Location01Icon, PinLocation01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { router } from "expo-router";
 import { Avatar } from "heroui-native/avatar";
@@ -67,23 +63,17 @@ export default function HomeScreen() {
           <Text className="text-2xl font-bold text-slate-900 tracking-tight">
             {isAuthenticated ? `Hello, ${userName}` : "Hello, Guest"} 👋
           </Text>
-          <Text className="text-sm text-slate-400 mt-0.5">
-            Ano papadala mo?
-          </Text>
+          <Text className="text-sm text-slate-400 mt-0.5">Ano papadala mo?</Text>
         </View>
         <Pressable
-          onPress={() =>
-            isAuthenticated ? router.push("/account") : router.push("/sign-in")
-          }
+          onPress={() => (isAuthenticated ? router.push("/account") : router.push("/sign-in"))}
           className="active:opacity-80"
           hitSlop={8}
           accessibilityLabel={isAuthenticated ? "Account" : "Sign in"}
           accessibilityRole="button"
         >
           <Avatar size="md" className="w-12 h-12 rounded-full">
-            {session?.user?.image ? (
-              <Avatar.Image source={{ uri: session.user.image }} />
-            ) : null}
+            {session?.user?.image ? <Avatar.Image source={{ uri: session.user.image }} /> : null}
             <Avatar.Fallback className="bg-amber-100 text-amber-800">
               {isAuthenticated ? userInitials : "G"}
             </Avatar.Fallback>
@@ -171,9 +161,7 @@ export default function HomeScreen() {
             onPress={handleContinue}
           >
             <Button.Label className="font-semibold text-base text-white mr-2">
-              {isAuthenticated
-                ? "Continue Delivery Request"
-                : "Sign In to Continue"}
+              {isAuthenticated ? "Continue Delivery Request" : "Sign In to Continue"}
             </Button.Label>
             <HugeiconsIcon icon={ArrowRight01Icon} size={18} color="#ffffff" />
           </Button>

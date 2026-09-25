@@ -14,8 +14,10 @@ import {
   type ViewStyle,
 } from "react-native";
 
-export interface FloatingSearchBarProps
-  extends Omit<TextInputProps, "style" | "value" | "onChangeText"> {
+export interface FloatingSearchBarProps extends Omit<
+  TextInputProps,
+  "style" | "value" | "onChangeText"
+> {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;

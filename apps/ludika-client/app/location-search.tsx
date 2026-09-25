@@ -1,8 +1,4 @@
-import {
-  MapsLocation01Icon,
-  PinLocation01Icon,
-  Search01Icon,
-} from "@hugeicons/core-free-icons";
+import { MapsLocation01Icon, PinLocation01Icon, Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
@@ -107,18 +103,11 @@ export default function LocationSearchScreen() {
       <FloatingSearchBar
         value={query}
         onChangeText={setQuery}
-        placeholder={
-          isPickup ? "Search pickup location" : "Search drop-off location"
-        }
+        placeholder={isPickup ? "Search pickup location" : "Search drop-off location"}
         autoFocus
         isLoading={isFetching}
         leftIcon={
-          <HugeiconsIcon
-            icon={PinLocation01Icon}
-            size={21}
-            color="#111827"
-            strokeWidth={1.8}
-          />
+          <HugeiconsIcon icon={PinLocation01Icon} size={21} color="#111827" strokeWidth={1.8} />
         }
       />
 
@@ -143,17 +132,10 @@ export default function LocationSearchScreen() {
               className="flex-row items-start gap-3 py-3 border-b border-slate-100 active:opacity-60"
             >
               <View className="mt-0.5">
-                <HugeiconsIcon
-                  icon={PinLocation01Icon}
-                  size={18}
-                  color="#000000"
-                />
+                <HugeiconsIcon icon={PinLocation01Icon} size={18} color="#000000" />
               </View>
               <View className="flex-1">
-                <Text
-                  className="text-slate-900 font-semibold text-sm mb-0.5"
-                  numberOfLines={1}
-                >
+                <Text className="text-slate-900 font-semibold text-sm mb-0.5" numberOfLines={1}>
                   {query.trim()}
                 </Text>
                 <Text className="text-slate-400 text-xs">Custom location</Text>
@@ -174,28 +156,16 @@ export default function LocationSearchScreen() {
             </View>
           ) : isError ? (
             <View className="items-center justify-center py-12">
-              <HugeiconsIcon
-                icon={MapsLocation01Icon}
-                size={32}
-                color="#A1A1AA"
-              />
-              <Text className="text-slate-900 font-medium text-sm mt-3">
-                Search unavailable
-              </Text>
+              <HugeiconsIcon icon={MapsLocation01Icon} size={32} color="#A1A1AA" />
+              <Text className="text-slate-900 font-medium text-sm mt-3">Search unavailable</Text>
               <Text className="text-slate-400 text-xs text-center mt-1">
                 Could not reach geocoding service.
               </Text>
             </View>
           ) : !isFetching ? (
             <View className="items-center justify-center py-12">
-              <HugeiconsIcon
-                icon={MapsLocation01Icon}
-                size={32}
-                color="#A1A1AA"
-              />
-              <Text className="text-slate-900 font-medium text-sm mt-3">
-                No matching locations
-              </Text>
+              <HugeiconsIcon icon={MapsLocation01Icon} size={32} color="#A1A1AA" />
+              <Text className="text-slate-900 font-medium text-sm mt-3">No matching locations</Text>
             </View>
           ) : null
         }
@@ -211,23 +181,13 @@ export default function LocationSearchScreen() {
             className="flex-row items-start gap-3 py-3 border-b border-slate-100 active:opacity-60"
           >
             <View className="mt-0.5">
-              <HugeiconsIcon
-                icon={PinLocation01Icon}
-                size={18}
-                color="#000000"
-              />
+              <HugeiconsIcon icon={PinLocation01Icon} size={18} color="#000000" />
             </View>
             <View className="flex-1">
-              <Text
-                className="text-slate-900 font-semibold text-sm mb-0.5"
-                numberOfLines={1}
-              >
+              <Text className="text-slate-900 font-semibold text-sm mb-0.5" numberOfLines={1}>
                 {item.name}
               </Text>
-              <Text
-                className="text-slate-400 text-xs leading-4"
-                numberOfLines={2}
-              >
+              <Text className="text-slate-400 text-xs leading-4" numberOfLines={2}>
                 {item.address}
               </Text>
             </View>
