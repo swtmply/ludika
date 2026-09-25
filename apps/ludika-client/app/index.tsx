@@ -1,9 +1,9 @@
-import { ArrowRight01Icon, Location01Icon, PinLocation01Icon } from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, PinLocation01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { router } from "expo-router";
 import { Avatar } from "heroui-native/avatar";
 import { Button } from "heroui-native/button";
-import { Card } from "heroui-native/card";
+
 import { useThemeColor } from "heroui-native/hooks";
 import { Spinner } from "heroui-native/spinner";
 import { Pressable, Text, View } from "react-native";
@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const { data: session, isPending } = authClient.useSession();
   const { draft } = useOrderDraft();
 
-  const accentColor = useThemeColor("accent");
+  const _accentColor = useThemeColor("accent");
 
   if (isPending) {
     return (

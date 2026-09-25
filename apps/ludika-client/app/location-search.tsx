@@ -5,7 +5,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Container, FloatingSearchBar } from "@ludika/mobile-ui";
 import { useOrderDraft } from "@/components/order-draft-context";
@@ -33,8 +32,8 @@ export default function LocationSearchScreen() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const mutedColor = useThemeColor("muted");
-  const accentColor = useThemeColor("accent");
+  const _mutedColor = useThemeColor("muted");
+  const _accentColor = useThemeColor("accent");
 
   // Debounce the search input so we don't fire a request on every keystroke.
   useEffect(() => {
@@ -67,7 +66,7 @@ export default function LocationSearchScreen() {
     staleTime: 30_000,
   });
 
-  const serverOnline = !isPinging && !isPingError && !!pingData?.ok;
+  const _serverOnline = !isPinging && !isPingError && !!pingData?.ok;
 
   const hasExactMatch = places.some(
     (place) => place.name.toLowerCase() === debouncedQuery.toLowerCase(),
