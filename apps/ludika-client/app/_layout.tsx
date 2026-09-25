@@ -4,12 +4,17 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useThemeColor } from "heroui-native/hooks";
 import { useCallback } from "react";
-import { AppThemeProvider, MobileUIProvider, ThemeToggle } from "@ludika/mobile-ui";
+import {
+  AppThemeProvider,
+  MobileUIProvider,
+  ThemeToggle,
+} from "@ludika/mobile-ui";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { View } from "react-native";
 
 import { SecurityBlockScreen } from "@ludika/mobile-ui/components/security-block";
+import { OrderDraftProvider } from "@/components/order-draft-context";
 import { queryClient } from "@/utils/trpc";
 
 export const unstable_settings = {
@@ -33,13 +38,24 @@ function StackLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(forms)/order" options={{ headerShown: false }} />
-      <Stack.Screen name="account" options={{ title: "Account", headerRight: renderThemeToggle }} />
-      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+      <Stack.Screen
+        name="account"
+        options={{ title: "Account", headerRight: renderThemeToggle }}
+      />
+      <Stack.Screen
+        name="location-search"
+        options={{
+          title: "Select Location",
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
 
 export default function Layout() {
+  const themeColorBackground = useThemeColor("background");
   const { checkDeviceSecurity, isChecked, isCompromised } = useSecurityStore();
 
   // Run the security check once on mount.
@@ -55,10 +71,10 @@ export default function Layout() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#0a0a0f",
+          backgroundColor: themeColorBackground,
         }}
       >
-        <ActivityIndicator size="large" color="#6366f1" />
+        {/* <Spinner /> */}
       </View>
     );
   }
@@ -73,7 +89,9 @@ export default function Layout() {
       <MobileUIProvider>
         <KeyboardProvider>
           <AppThemeProvider>
-            <StackLayout />
+            <OrderDraftProvider>
+              <StackLayout />
+            </OrderDraftProvider>
           </AppThemeProvider>
         </KeyboardProvider>
       </MobileUIProvider>

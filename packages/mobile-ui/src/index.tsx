@@ -16,6 +16,10 @@ export function MobileUIProvider({ children, ...providerProps }: MobileUIProvide
 
 // Shared mobile components. Add one line per component; keep it alphabetical.
 export { Container } from "./components/container";
+export {
+  FloatingSearchBar,
+  type FloatingSearchBarProps,
+} from "./components/floating-search-bar";
 export { SignIn, type SignInProps } from "./components/sign-in";
 export { SignUp, type SignUpProps } from "./components/sign-up";
 export { ThemeToggle } from "./components/theme-toggle";
