@@ -61,7 +61,7 @@ export default function LiveFeedScreen() {
         className="mt-2"
         onPress={() => {
           reset();
-          router.replace("/order/pickup-dropoff");
+          router.replace("/");
         }}
       >
         <Button.Label>Place another order</Button.Label>
